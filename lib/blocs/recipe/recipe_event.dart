@@ -18,12 +18,13 @@ class AddRecipe extends RecipeEvent {
 }
 
 class UpdateRecipe extends RecipeEvent {
+  final String id;
   final Recipe recipe;
 
-  UpdateRecipe(this.recipe);
+  UpdateRecipe(this.recipe, this.id);
 
   @override
-  List<Object> get props => [recipe];
+  List<Object> get props => [recipe, id];
 }
 
 class DeleteRecipe extends RecipeEvent {

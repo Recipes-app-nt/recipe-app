@@ -8,8 +8,8 @@ class RecipeRepository {
     await _recipeService.addRecipe(recipe);
   }
 
-  Future<void> updateRecipe(Recipe recipe) async {
-    await _recipeService.updateRecipe(recipe);
+  Future<void> updateRecipe(Recipe recipe, String id) async {
+    await _recipeService.updateRecipe(recipe, id);
   }
 
   Future<void> deleteRecipe(String id) async {

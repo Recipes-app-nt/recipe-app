@@ -1,26 +1,53 @@
-import 'package:dio/dio.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 
-class RecipeService {
-  final Dio _dio = Dio();
-  final String _baseUrl = 'https://your-firebase-url.firebaseio.com';
+import '../../core/network/dio_client.dart';
 
-  Future<void> addRecipe(Recipe recipe) async {
-    await _dio.post('$_baseUrl/recipes/${recipe.id}.json',
-        data: recipe.toJson());
+class RecipeService {
+  final _dioClient = DioClient();
+
+  Future<Recipe> addRecipe(Recipe recipe) async {
+    try {
+      final response = await _dioClient.add(
+        url: "/recipes.json",
+        data: recipe.toJson(),
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw Exception('Failed to add books');
+      }
+
+      final data = response.data;
+      final recipeId = data['name'];
+      recipe.id = recipeId;
+
+      return Recipe.fromJson(
+        data,
+        recipeId,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<void> updateRecipe(Recipe recipe) async {
-    await _dio.put('$_baseUrl/recipes/${recipe.id}.json',
-        data: recipe.toJson());
+  Future<Recipe> updateRecipe(Recipe recipe, String id) async {
+   final response = await _dioClient.update(
+      url: '/recipes/$id.json',
+      data: recipe.toJson(),
+    );
+
+    return Recipe.fromJson(response.data, id);
   }
 
   Future<void> deleteRecipe(String id) async {
-    await _dio.delete('$_baseUrl/recipes/$id.json');
+    await _dioClient.delete(
+      url: '/recipes/$id.json',
+    );
   }
 
   Future<Recipe?> getRecipeById(String id) async {
-    final response = await _dio.get('$_baseUrl/recipes/$id.json');
+    final response = await _dioClient.get(
+      url: '/recipes/$id.json',
+    );
     if (response.data != null) {
       return Recipe.fromJson(response.data, id);
     }
@@ -28,11 +55,15 @@ class RecipeService {
   }
 
   Future<List<Recipe>> getAllRecipes() async {
-    final response = await _dio.get('$_baseUrl/recipes.json');
+    final response = await _dioClient.get(
+      url: '/recipes.json',
+    );
     if (response.data != null) {
       final recipes = <Recipe>[];
-      final data = response.data as Map<String, dynamic>;
+      final Map<String, dynamic> data = response.data;
+
       data.forEach((id, json) {
+        json['id'] = id;
         recipes.add(Recipe.fromJson(json, id));
       });
       return recipes;

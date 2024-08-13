@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:recipe_app/ui/views/authentication/screens/register_screen.dart';
+import 'package:recipe_app/ui/views/authentication/widgets/social_button.dart';
 import 'package:recipe_app/ui/views/recipe/widgets/custom_textfield.dart';
 import 'package:recipe_app/ui/widgets/custom_button.dart';
 import 'package:recipe_app/ui/widgets/custom_text.dart';
@@ -14,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,12 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const Gap(24),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _socialButton('assets/images/google.png'),
-                    const Gap(16),
-                    _socialButton('assets/images/facebook.png'),
+                    SocialButton(assetName: 'assets/images/google.png'),
+                    Gap(16),
+                    SocialButton(assetName: 'assets/images/facebook.png'),
                   ],
                 ),
                 const Gap(40),
@@ -95,7 +99,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text("Don't have an account? "),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ),
+                        );
+                      },
                       child: const Text('Sign up',
                           style: TextStyle(color: Colors.orange)),
                     ),
@@ -106,24 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _socialButton(String assetName) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            blurStyle: BlurStyle.outer,
-            blurRadius: 10,
-          )
-        ],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Image.asset(assetName, height: 24, width: 24),
     );
   }
 }

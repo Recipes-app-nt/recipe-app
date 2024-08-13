@@ -1,10 +1,4 @@
-import 'dart:math';
-
-import 'package:dio/dio.dart';
-import 'package:recipe_app/data/models/comment_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
-import 'package:uuid/uuid.dart';
-import 'package:uuid/v4.dart';
 
 import '../../core/network/dio_client.dart';
 
@@ -19,7 +13,6 @@ class RecipeService {
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-
         throw Exception("Qo'shishda xatolik!!!");
       }
 
@@ -87,13 +80,15 @@ class RecipeService {
         url: '/recipes.json',
       );
       if (response.data != null) {
-        final recipes = <Recipe>[];
+        List<Recipe> recipes = [];
         final Map<String, dynamic> data = response.data;
 
-        data.forEach((id, json) {
-          json['id'] = id;
-          recipes.add(Recipe.fromJson(json, id));
-        });
+        data.forEach(
+          (key, value) {
+            value['id'] = key;
+            recipes.add(Recipe.fromJson(value, key));
+          },
+        );
         return recipes;
       }
       return [];
@@ -102,100 +97,13 @@ class RecipeService {
       rethrow;
     }
   }
-
-  Future<void> addComment(String recipeId, Comment comment) async {
-    try {
-      final response = await _dioClient.get(
-        url: '/recipes/$recipeId.json',
-      );
-
-      if (response.data == null) {
-        throw Exception('Recipe not found');
-      }
-
-      final dynamic commentsData = response.data['comments'];
-      final List<dynamic> commentList =
-          commentsData is List<dynamic> ? List<dynamic>.from(commentsData) : [];
-
-      final newComment = comment.toJson();
-      commentList.add(newComment);
-
-      final updateResponse = await _dioClient.update(
-        url: '/recipes/$recipeId.json',
-        data: {'comments': commentList},
-      );
-
-      if (updateResponse.statusCode != 200 &&
-          updateResponse.statusCode != 201) {
-        throw Exception('Failed to update comments');
-      }
-
-      print('Comment added successfully');
-    } on DioException catch (e) {
-      print('Error adding comment: $e');
-      rethrow;
-    } catch (e) {
-      print('Error adding comment: $e');
-      rethrow;
-    }
-  }
-
-
-
-  Future<void> addLike(String recipeId, String userId) async {
-    try {
-      final response = await _dioClient.get(
-        url: '/recipes/$recipeId.json',
-      );
-
-      if (response.data == null) {
-        throw Exception('Recipe not found');
-      }
-
-      final likes = response.data['likes'];
-      List<String> updatedLikes = [];
-
-      if (likes is List) {
-        updatedLikes = List<String>.from(likes);
-      }
-
-      if (!updatedLikes.contains(userId)) {
-        updatedLikes.add(userId);
-      }
-
-      final updateResponse = await _dioClient.update(
-        url: '/recipes/$recipeId.json',
-        data: {'likes': updatedLikes},
-      );
-
-      if (updateResponse.statusCode != 200 &&
-          updateResponse.statusCode != 201) {
-        throw Exception('Failed to update likes');
-      }
-
-      print('Like added successfully');
-    } on DioException catch (e) {
-      print('Error adding like: ${e.response?.data}');
-      rethrow;
-    } catch (e) {
-      print('Error adding like: $e');
-      rethrow;
-    }
-  }
 }
 
 // void main(List<String> args) async {
 //   RecipeService recipeService = RecipeService();
 //   try {
-//     await recipeService.addComment(
-//       "-O47-FV-tElNB9W-eGDf",
-//       Comment(
-//         userId: "s",
-//         text: "Yangi comment",
-//         timestamp: DateTime.now(),
-//       ),
-//     );
-//     // await recipeService.addLike("-O47-FV-tElNB9W-eGDf", 'a');
+//     final res = await recipeService.getAllRecipes();
+//     print(res);
 //     print('Update successful');
 //   } catch (e) {
 //     print('Main function error: $e');

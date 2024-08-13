@@ -13,7 +13,7 @@ class RecipeService {
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-        throw Exception('Failed to add books');
+        throw Exception("Qo'shishda xatolik!!!");
       }
 
       final data = response.data;

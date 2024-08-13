@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/app.dart';
@@ -10,5 +12,6 @@ void main(List<String> args) async{
     options: DefaultFirebaseOptions.currentPlatform,
   );
   setUp();
+  setUpAuth();
   runApp(const MyApp());
 }

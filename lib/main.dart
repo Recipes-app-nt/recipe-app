@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/ui/recipe/screens/add_recipe.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AddRecipe(),
+      theme: ThemeData(fontFamily: 'Poppins'),
+      // home: AddRecipe(),
+      home: SplashScreen(),
     );
   }
 }

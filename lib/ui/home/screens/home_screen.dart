@@ -1,7 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
+import 'package:recipe_app/blocs/recipe/recipe_event.dart';
+import 'package:recipe_app/blocs/recipe/recipe_state.dart';
+import 'package:recipe_app/ui/home/widgets/profile_info_widget.dart';
 import 'package:recipe_app/ui/home/widgets/search_field.dart';
+import 'package:recipe_app/ui/home/widgets/stack_product_widget.dart';
 
 import '../widgets/categories_widget.dart';
 
@@ -12,51 +18,20 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hello Jega",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        "what are you cooking today ?",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color(0xffFFCE80),
-                    ),
-                    child: Image.asset('assets/images/emoji.png'),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const ProfileInfoWidget(),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: MySearchField(),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: MySearchField(),
-            ),
-            MyCategoriesRow()
-          ],
+              const Gap(10.0),
+              const MyCategoriesRow(),
+              // const Gap(70.0),
+              StackProductWidget()
+            ],
+          ),
         ),
       ),
     );

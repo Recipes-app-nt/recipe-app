@@ -45,6 +45,9 @@ dependencies:
   shared_preferences: ^2.3.1
   auth_repository:
     path: packages/auth_repository
+  bloc_test: ^9.1.7
+  mockito: ^5.4.4
+  firebase_core: ^2.24.2
 
 dev_dependencies:
   flutter_test:

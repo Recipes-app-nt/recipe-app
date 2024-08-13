@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/core/app.dart';
-import 'package:recipe_app/data/services/get_it.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:recipe_app/ui/views/main_screen.dart';
 
 void main(List<String> args) {
-  setUp();
   runApp(const MyApp());
-/*
-import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
-
-void main(List<String> args) {
-  runApp(MyApp());
 }
 
+// test
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Poppins'),
-      // home: AddRecipe(),
-      home: SplashScreen(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Food Recipe',
+          home: child,
+        );
+      },
+      child: const MainScreen(),
     );
   }
-  */
 }

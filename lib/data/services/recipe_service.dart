@@ -102,7 +102,24 @@ class RecipeService {
 // void main(List<String> args) async {
 //   RecipeService recipeService = RecipeService();
 //   try {
-//     final res = await recipeService.getAllRecipes();
+//     final res = recipeService.addRecipe(
+//       Recipe(
+//         id: "3",
+//         title: "title sfjskl ghsklgs ghsdklfsd sghslk",
+//         ingredients: ["ingredients"],
+//         instructions: ["instructions"],
+//         cookingTime: "20",
+//         imageUrl:
+//             "https://images.pexels.com/photos/1211887/pexels-photo-1211887.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+//         videoUrl: "videoUrl",
+//         category: "category",
+//         authorId: "authorId",
+//         likes: [],
+//         comments: [],
+//         createdAt: DateTime.now(),
+//         updatedAt: DateTime.now(),
+//       ),
+//     );
 //     print(res);
 //     print('Update successful');
 //   } catch (e) {

@@ -137,9 +137,10 @@ class _AddRecipeState extends State<AddRecipe> {
                 child: const Text(
                   "Qo'shish",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600),
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],

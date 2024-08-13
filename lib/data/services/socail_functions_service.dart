@@ -90,15 +90,15 @@ class SocailFunctionsService {
 // void main(List<String> args) async {
 //   SocailFunctionsService recipeService = SocailFunctionsService();
 //   try {
-//     await recipeService.addComment(
-//       "-O47-FV-tElNB9W-eGDf",
-//       Comment(
-//         userId: "s",
-//         text: "Test comment",
-//         timestamp: DateTime.now(),
-//       ),
-//     );
-//     // await recipeService.addLike("-O47-FV-tElNB9W-eGDf", 'a');
+//     // await recipeService.addComment(
+//     //   "-O4AwUHRWqLTiCn49gvO",
+//     //   Comment(
+//     //     userId: "sdfghgj",
+//     //     text: "Test comment",
+//     //     timestamp: DateTime.now(),
+//     //   ),
+//     // );
+//     await recipeService.addLike("-O4AwUHRWqLTiCn49gvO", 'a');
 //     print('Update successful');
 //   } catch (e) {
 //     print('Main function error: $e');

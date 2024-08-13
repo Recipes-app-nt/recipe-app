@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:recipe_app/ui/views/authentication/widgets/social_button.dart';
-import 'package:recipe_app/ui/views/recipe/widgets/custom_textfield.dart';
+import 'package:recipe_app/ui/widgets/custom_textfield.dart';
 import 'package:recipe_app/ui/widgets/custom_button.dart';
 import 'package:recipe_app/ui/widgets/custom_text.dart';
 
@@ -16,7 +16,7 @@ class RegisterScreen extends StatelessWidget {
     final confirmController = TextEditingController();
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: SingleChildScrollView(        
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(

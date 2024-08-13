@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/ui/views/recipe/widgets/custom_textfield.dart';
+import 'package:recipe_app/ui/widgets/custom_textfield.dart';
 
 class AddRecipe extends StatefulWidget {
   const AddRecipe({super.key});

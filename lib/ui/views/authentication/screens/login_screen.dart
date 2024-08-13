@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:recipe_app/blocs/auth/auth_bloc.dart';
+import 'package:recipe_app/data/services/get_it.dart';
 import 'package:recipe_app/ui/views/authentication/screens/register_screen.dart';
 import 'package:recipe_app/ui/views/authentication/widgets/social_button.dart';
-import 'package:recipe_app/ui/views/recipe/widgets/custom_textfield.dart';
+import 'package:recipe_app/ui/widgets/custom_textfield.dart';
 import 'package:recipe_app/ui/widgets/custom_button.dart';
 import 'package:recipe_app/ui/widgets/custom_text.dart';
 
@@ -17,6 +19,39 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+
+    final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (!emailRegExp.hasMatch(value)) {
+      return 'Enter a valid email address';
+    }
+
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+
+    // Check for at least one uppercase letter, one lowercase letter, and one number
+    if (!value.contains(RegExp(r'[A-Z]')) ||
+        !value.contains(RegExp(r'[a-z]')) ||
+        !value.contains(RegExp(r'[0-9]'))) {
+      return 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Gap(40),
                 CustomTextFormField(
+                  validator: validateEmail,
                   controller: emailController,
                   labelText: "Email",
                   hintText: "Enter email",
                 ),
                 const Gap(16),
                 CustomTextFormField(
+                  validator: validatePassword,
                   controller: passwordController,
                   labelText: "Password",
                   hintText: "Enter password",
@@ -62,7 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   child: CustomButton(
                     title: "Sign in",
-                    onPressed: () {},
+                    onPressed: () {
+                      getIt.get<AuthBloc>().add(
+                            AuthSignIn(
+                                emailController.text, passwordController.text),
+                          );
+                    },
                   ),
                 ),
                 const Gap(24),

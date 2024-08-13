@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/core/app.dart';
+import 'package:recipe_app/data/services/get_it.dart';
+
+void main(List<String> args) {
+  setUp();
+  runApp(const MyApp());
+/*
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
 
@@ -18,4 +25,5 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
     );
   }
+  */
 }

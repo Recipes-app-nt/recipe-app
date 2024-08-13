@@ -41,10 +41,10 @@ dependencies:
   google_fonts: ^6.2.1
   gap: ^3.0.1
   uuid: ^4.4.2
-  gap: ^3.0.1
   get_it: ^7.7.0
   bloc_test: ^9.1.7
   mockito: ^5.4.4
+  firebase_core: ^2.24.2
 
 dev_dependencies:
   flutter_test:

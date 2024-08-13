@@ -1,29 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/app.dart';
 import 'package:recipe_app/data/services/get_it.dart';
+import 'package:recipe_app/firebase_options.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   setUp();
   runApp(const MyApp());
-/*
-import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
-
-void main(List<String> args) {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Poppins'),
-      // home: AddRecipe(),
-      home: SplashScreen(),
-    );
-  }
-  */
 }

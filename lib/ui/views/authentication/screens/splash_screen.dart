@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _startAnimation();
     _loadNextPage();
-    context.read<CategoryBloc>().add(GetCategory());
+    // context.read<CategoryBloc>().add(GetCategory());
   }
 
   void _loadNextPage() {

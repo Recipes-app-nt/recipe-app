@@ -24,6 +24,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }
 
   void _onAddRecipe(AddRecipe event, Emitter<RecipeState> emit) async {
+    emit(RecipeLoading());
     try {
        await repository.addRecipe(event.recipe);
       add(LoadRecipes());
@@ -57,7 +58,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       final mediaLink = await repository.uploadMedia(event.path);
 
       if (mediaLink != null) {
-        emit(MediaUploadSuccess(mediaLink));
+        emit(MediaUploadSuccess(mediaLink, event.mediaType));
       } else {
         emit(MediaUploadFailure("Yuklashda xatolik"));
       }

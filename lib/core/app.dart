@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         child: const ToastificationWrapper(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+            home: MainScreen(),
           ),
         ),
       ),

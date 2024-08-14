@@ -138,7 +138,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.upload, size: 50),
+                               Icon(Icons.upload, size: 50),
                               Text("Rasm yoki Video yuklash"),
                             ],
                           ),

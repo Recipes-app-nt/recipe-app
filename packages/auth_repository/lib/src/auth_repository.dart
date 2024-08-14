@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +25,7 @@ class AuthService {
         return user;
       }
       throw response.data['error']['message'];
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       print("Error:  $e");

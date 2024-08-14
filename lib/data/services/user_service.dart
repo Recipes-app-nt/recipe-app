@@ -16,8 +16,14 @@ class DioUserService {
 
       print(response.data);
 
+      final prefs = await SharedPreferences.getInstance();
+      
+      final userInfo = jsonDecode( prefs.getString("userInfo")!);
+      
+      print(userInfo['id']);
+      
       if (response.data != null) {
-        return User.fromJson(response.data, "user1");
+        return User.fromJson(response.data, userInfo['id']);
       }
       return null;
     } on DioException {

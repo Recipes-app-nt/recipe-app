@@ -7,7 +7,6 @@ import 'package:recipe_app/data/repositories/user_repository.dart';
 import 'package:recipe_app/data/services/user_service.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
 import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
-import 'package:recipe_app/ui/views/main_screen.dart';
 import 'package:toastification/toastification.dart';
 
 import '../blocs/auth/auth_bloc.dart';

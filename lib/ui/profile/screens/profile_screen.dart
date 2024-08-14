@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
@@ -74,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(
-                          "https://www.escoffier.edu/wp-content/uploads/2022/03/Female-chef-plating-and-garnishing-a-breaded-chicken-dish-768.jpg"),
+                          "https://img.freepik.com/premium-vector/male-chef-logo-illustration_119589-139.jpg?w=2000"),
                     ),
                     SizedBox(
                       width: 30,
@@ -168,12 +169,88 @@ class _ProfileScreenState extends State<ProfileScreen>
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Expanded(
-                  child: TabBarView(controller: tabController, children: const [
-                    Card(
-                      child: Text("Card 1"),
+                  child: TabBarView(controller: tabController, children: [
+                    ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          clipBehavior: Clip.hardEdge,
+                          margin: const EdgeInsets.only(top: 20),
+                          width: double.infinity,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: const DecorationImage(
+                              image: NetworkImage(
+                                "https://i.pinimg.com/originals/82/68/69/826869734a6637abf7efe5fc8aa8e11d.jpg",
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            clipBehavior: Clip.hardEdge,
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0),
+                                  Colors.black,
+                                ],
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      "Traditional spare ribs backend",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/timer.svg",
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        const Text(
+                                          "20 min",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFFD9D9D9),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    Card(
+                    const Card(
                       child: Text("Card 2"),
                     )
                   ]),

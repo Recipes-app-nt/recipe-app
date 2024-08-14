@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:recipe_app/ui/home/widgets/search_field.dart';
 
 import '../widgets/categories_widget.dart';

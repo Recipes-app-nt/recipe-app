@@ -5,7 +5,6 @@ import 'package:recipe_app/ui/views/add_screen.dart';
 import 'package:recipe_app/ui/views/home_screen.dart';
 import 'package:recipe_app/ui/views/notifications_screen.dart';
 import 'package:recipe_app/ui/views/profile_screen.dart';
-import 'package:recipe_app/ui/profile/screens/profile_screen.dart';
 import 'package:recipe_app/ui/views/add_screen.dart';
 import 'package:recipe_app/ui/views/home_screen.dart';
 import 'package:recipe_app/ui/views/notifications_screen.dart';

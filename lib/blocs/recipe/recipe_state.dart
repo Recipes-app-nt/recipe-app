@@ -32,8 +32,9 @@ class MediaUploadInProgress extends RecipeState {}
 /// Media yuklanib bo'landan so'ng
 class MediaUploadSuccess extends RecipeState {
   final String downloadUrl;
+  String mediaType;
 
-  MediaUploadSuccess(this.downloadUrl);
+  MediaUploadSuccess(this.downloadUrl, this.mediaType);
 
   @override
   List<Object> get props => [downloadUrl];

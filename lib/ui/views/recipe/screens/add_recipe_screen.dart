@@ -33,8 +33,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     selectedCategory = "Nonushta";
   }
 
+  void clearController(){
+    recipeNameController.clear();
+    ingredientsController.clear();
+    instructionsController.clear();
+    cookingTimeController.clear();
+    categoryController.clear();
+  }
+
   Future<void> _pickAndUploadMedia(BuildContext context) async {
-  
     final mediaType = await _showMediaPickerDialog(context);
     if (mediaType == null) return;
 
@@ -49,20 +56,20 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Select Media'),
-          content: const Text('Choose whether to upload an image or a video.'),
-          actions: <Widget>[
+          title: const Text("Mediani tanlang"),
+          content: const Text("Rasm yuklaysizmi yoki Video. Tanlng!!!"),
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop('image');
               },
-              child: const Text('Image'),
+              child: const Text("Rasm"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop('video');
               },
-              child: const Text('Video'),
+              child: const Text("Video"),
             ),
           ],
         );
@@ -79,15 +86,34 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       ),
       body: BlocBuilder<RecipeBloc, RecipeState>(
         builder: (context, state) {
-          if (state is MediaUploadInProgress) {
+          if (state is MediaUploadInProgress || state is RecipeLoading) {
             return const Center(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("Yuklanmoqda...")
-                  ]),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Text("Yuklanmoqda..."),
+                ],
+              ),
             );
+          } else if (state is MediaUploadSuccess) {
+            if (state.mediaType == 'image') {
+              imageUrl = state.downloadUrl;
+            } else if (state.mediaType == 'video') {
+              videoUrl = state.downloadUrl;
+            }
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("${state.mediaType == 'image' ? 'Rasm' : 'Video'} yuklandi!"),
+                  backgroundColor: Colors.green,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            });
+          } else if (state is MediaUploadFailure) {
+            return const Center(
+                child: Text("Media yuklashda xatolik yuz berdi!"));
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -210,6 +236,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           );
 
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
+                          clearController();
                         }
                       },
                       style: ElevatedButton.styleFrom(

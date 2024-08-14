@@ -101,35 +101,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Recept qo'shish"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditRecipeScreen(
-                            recipe: Recipe(
-                                id: "2",
-                                title: "O'zgarmadi",
-                                ingredients: ["ksjfd", "lksfj"],
-                                instructions: ["lj", "lkfjgf"],
-                                cookingTime: "10",
-                                imageUrl: "imageUrl",
-                                videoUrl: "videoUrl",
-                                category: "category",
-                                authorId: "authorId",
-                                likes: ["kdjf", "lsk"],
-                                comments: [
-                                  Comment(
-                                      userId: "userId",
-                                      text: "text",
-                                      timestamp: DateTime.now())
-                                ],
-                                createdAt: DateTime.now(),
-                                updatedAt: DateTime.now()))));
-              },
-              icon: Icon(Icons.edit))
-        ],
         centerTitle: true,
       ),
       body: BlocBuilder<RecipeBloc, RecipeState>(
@@ -161,8 +132,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               );
             });
           } else if (state is MediaUploadFailure) {
-            return const Center(
-                child: Text("Media yuklashda xatolik yuz berdi!"));
+            return  Center(
+                child: Text(state.message),);
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),

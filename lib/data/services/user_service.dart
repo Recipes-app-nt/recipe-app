@@ -8,14 +8,16 @@ class DioUserService {
   Future<User?> getUserById(String userId) async {
     try {
       final response = await _dio.get(
-        url: 'https://jaguar-c9cc8-default-rtdb.firebaseio.com/users/$userId',
+        url: 'users/$userId.json',
       );
+
+      print(response.data);
 
       if (response.data != null) {
         return User.fromJson(response.data, "user1");
       }
       return null;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;

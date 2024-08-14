@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
+import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/repositories/category_repository.dart';
+import 'package:recipe_app/data/repositories/user_repository.dart';
+import 'package:recipe_app/data/services/user_service.dart';
 import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
+import 'package:recipe_app/ui/views/main_screen.dart';
 import 'package:toastification/toastification.dart';
 
 import '../blocs/auth/auth_bloc.dart';
@@ -16,10 +20,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repository = RecipeRepository();
+    final dioUserService = DioUserService();
+    final userRepository = UserRepository(dioUserService: dioUserService);
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(
           value: getIt.get<CategoryRepository>(),
+        ),
+        RepositoryProvider(
+          create: (context) => UserRepository(dioUserService: dioUserService),
         ),
       ],
       child: MultiBlocProvider(
@@ -30,12 +39,15 @@ class MyApp extends StatelessWidget {
           BlocProvider.value(value: getIt.get<AuthBloc>()),
           BlocProvider(
             create: (context) => RecipeBloc(repository),
+          ),
+          BlocProvider(
+            create: (context) => UserBloc(userRepository: userRepository),
           )
         ],
         child: const ToastificationWrapper(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+            home: MainScreen(),
           ),
         ),
       ),

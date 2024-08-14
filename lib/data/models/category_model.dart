@@ -1,23 +1,23 @@
-class Category {
+class CategoriesModel {
+  final String id;
   final String name;
-  final List<String> recipeIds;
+  final String categoryId;
 
-  Category({
-    required this.name,
-    required this.recipeIds,
-  });
+  CategoriesModel(
+      {required this.id, required this.name, required this.categoryId});
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
-      name: json['name'] ?? '',
-      recipeIds: List<String>.from(json['recipes'] ?? []),
-    );
+  factory CategoriesModel.fromJson(Map<String, dynamic> json) {
+    return CategoriesModel(
+        id: json['id'] ?? '',
+        name: json['name'] ?? '',
+        categoryId: json['categoryId'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
-      'recipes': recipeIds,
+      'categoryId': categoryId,
     };
   }
 }

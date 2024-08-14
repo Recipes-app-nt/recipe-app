@@ -55,7 +55,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     emit(MediaUploadInProgress());
 
     try {
-      final mediaLink = await repository.uploadMedia(event.path);
+      final mediaLink = await repository.uploadMedia(event.path, event.mediaType);
 
       if (mediaLink != null) {
         emit(MediaUploadSuccess(mediaLink, event.mediaType));

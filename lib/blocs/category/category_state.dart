@@ -1,7 +1,7 @@
 part of 'category_bloc.dart';
 
 final class CategoryState {
-  List<Category>? category;
+  List<CategoriesModel>? category;
   String? errorMessage;
   bool isLoading;
 
@@ -12,7 +12,7 @@ final class CategoryState {
   });
 
   CategoryState copyWith({
-    List<Category>? category,
+    List<CategoriesModel>? category,
     String? errorMessage,
     bool? isloading,
   }) {

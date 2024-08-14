@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_event.dart';
 import 'package:recipe_app/blocs/recipe/recipe_state.dart';
+import 'package:recipe_app/data/models/category_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 import 'package:recipe_app/data/services/media_picker_service.dart';
 import 'package:recipe_app/ui/widgets/custom_textfield.dart';
@@ -33,7 +35,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     selectedCategory = "Nonushta";
   }
 
-  void clearController(){
+  void clearController() {
     recipeNameController.clear();
     ingredientsController.clear();
     instructionsController.clear();
@@ -105,7 +107,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("${state.mediaType == 'image' ? 'Rasm' : 'Video'} yuklandi!"),
+                  content: Text(
+                      "${state.mediaType == 'image' ? 'Rasm' : 'Video'} yuklandi!"),
                   backgroundColor: Colors.green,
                   duration: const Duration(seconds: 2),
                 ),
@@ -138,7 +141,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                               Icon(Icons.upload, size: 50),
+                              Icon(Icons.upload, size: 50),
                               Text("Rasm yoki Video yuklash"),
                             ],
                           ),
@@ -190,29 +193,49 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                          labelText: 'Category', border: OutlineInputBorder()),
-                      items: [
-                        "Nonushta",
-                        "Tushlik",
-                        "Kechki ovqat",
-                        "Shirinlik"
-                      ].map((item) {
-                        return DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(item),
+                    
+                    BlocBuilder<CategoryBloc, CategoryState>(
+                      builder: (context, state) {
+                        if (state.isLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (state.errorMessage != null) {
+                          return Center(
+                            child: Text(state.errorMessage!),
+                          );
+                        }
+                        if (state.category == null || state.category!.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final categoryItems = state.category!.map((category) {
+                          return DropdownMenuItem<CategoriesModel>(
+                            value: category,
+                            child: Text(category.name),
+                          );
+                        }).toList();
+
+                        return DropdownButtonFormField<CategoriesModel>(
+                          decoration: const InputDecoration(
+                            labelText: 'Category',
+                            border: OutlineInputBorder(),
+                          ),
+                          items: categoryItems,
+                          onChanged: (CategoriesModel? value) {
+
+                            setState(() {
+                              selectedCategory = value!.categoryId;
+                              categoryController.text = value
+                                  .name;
+                            });
+                          },
+                          validator: (value) => value == null
+                              ? "Iltimos categoriyani tanlang"
+                              : null,
                         );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCategory = value!;
-                          categoryController.text = value;
-                        });
                       },
-                      value: selectedCategory,
-                      validator: (value) =>
-                          value == null ? "Iltimos categoriyani tanlang" : null,
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
@@ -227,7 +250,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             cookingTime: cookingTimeController.text,
                             imageUrl: imageUrl ?? "",
                             videoUrl: videoUrl ?? "",
-                            category: categoryController.text,
+                            category: selectedCategory.toString(),
                             authorId: "",
                             likes: [],
                             comments: [],

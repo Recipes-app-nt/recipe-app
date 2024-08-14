@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:recipe_app/ui/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/profile/screens/profile_screen.dart';
-import 'package:recipe_app/ui/views/add_screen.dart';
-import 'package:recipe_app/ui/views/home_screen.dart';
 import 'package:recipe_app/ui/views/notifications_screen.dart';
+import 'package:recipe_app/ui/views/recipe/screens/add_recipe_screen.dart';
 import 'package:recipe_app/ui/views/saved_recipes_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,13 +18,12 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> screens = [
     const HomeScreen(),
     const SavedRecipesScreen(),
-    const AddScreen(),
+    const AddRecipe(),
     const NotificationsScreen(),
     const ProfileScreen(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const HomeScreen(); // Our first view in viewport
-
+  Widget currentScreen = const HomeScreen();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +34,11 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF129575),
         shape: const CircleBorder(),
-        onPressed: () {},
+        onPressed: () {
+          currentScreen = screens[2];
+          setState(() {});
+          currentTab = 4;
+        },
         child: const Icon(
           Icons.add,
           color: Colors.white,

@@ -18,9 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      setState(() {});
-    });
+
     super.initState();
   }
 
@@ -169,9 +167,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ],
                 ),
                 Expanded(
-                  child: TabBarView(controller: tabController, children: const [
-                    Card(
-                      child: Text("Card 1"),
+                  child: TabBarView(controller: tabController, children: [
+                    Container(
+                      width: double.infinity,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              "https://i.pinimg.com/originals/82/68/69/826869734a6637abf7efe5fc8aa8e11d.jpg",),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     Card(
                       child: Text("Card 2"),

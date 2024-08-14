@@ -25,7 +25,6 @@ class RecipeService {
         recipeId,
       );
     } catch (e) {
-      print('Error adding recipe: $e');
       rethrow;
     }
   }
@@ -38,12 +37,12 @@ class RecipeService {
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-        throw Exception('Failed to update recipe');
+        throw Exception("Ma'lumotni tahrirlashda xatolik!!!");
       }
 
       return Recipe.fromJson(response.data, id);
     } catch (e) {
-      print('Error updating recipe: $e');
+      print("Xatolik $e");
       rethrow;
     }
   }
@@ -54,7 +53,6 @@ class RecipeService {
         url: '/recipes/$id.json',
       );
     } catch (e) {
-      print('Error deleting recipe: $e');
       rethrow;
     }
   }
@@ -69,7 +67,6 @@ class RecipeService {
       }
       return null;
     } catch (e) {
-      print('Error getting recipe by ID: $e');
       rethrow;
     }
   }
@@ -93,36 +90,8 @@ class RecipeService {
       }
       return [];
     } catch (e) {
-      print('Error getting all recipes: $e');
       rethrow;
     }
   }
 }
 
-// void main(List<String> args) async {
-//   RecipeService recipeService = RecipeService();
-//   try {
-//     final res = recipeService.addRecipe(
-//       Recipe(
-//         id: "3",
-//         title: "title sfjskl ghsklgs ghsdklfsd sghslk",
-//         ingredients: ["ingredients"],
-//         instructions: ["instructions"],
-//         cookingTime: "20",
-//         imageUrl:
-//             "https://images.pexels.com/photos/1211887/pexels-photo-1211887.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-//         videoUrl: "videoUrl",
-//         category: "category",
-//         authorId: "authorId",
-//         likes: [],
-//         comments: [],
-//         createdAt: DateTime.now(),
-//         updatedAt: DateTime.now(),
-//       ),
-//     );
-//     print(res);
-//     print('Update successful');
-//   } catch (e) {
-//     print('Main function error: $e');
-//   }
-// }

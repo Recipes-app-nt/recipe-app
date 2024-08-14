@@ -8,7 +8,6 @@ import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
 
-import '../../../data/models/recipe_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

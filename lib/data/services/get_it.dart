@@ -12,11 +12,11 @@ final getIt = GetIt.instance;
 
 void setUp() {
   getIt.registerSingleton(
-    DioCategroiesService(),
+    DioCategoryService(),
   );
   getIt.registerSingleton(
     CategoryRepository(
-      dioCategoryService: getIt.get<DioCategroiesService>(),
+      dioCategoryService: getIt.get<DioCategoryService>(),
     ),
   );
   getIt.registerSingleton(

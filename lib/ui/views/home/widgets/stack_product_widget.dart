@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:recipe_app/ui/views/home/widgets/shimmers/stack_product_shimmer.dart';
+import 'package:recipe_app/ui/widgets/favorite_button.dart';
 
 import '../../../../blocs/recipe/recipe_bloc.dart';
 import '../../../../blocs/recipe/recipe_event.dart';
@@ -15,9 +17,19 @@ class StackProductWidget extends StatelessWidget {
       bloc: context.read<RecipeBloc>()..add(LoadRecipes()),
       builder: (context, state) {
         print(state);
+
         if (state is RecipeLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return SizedBox(
+            height: 280,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              itemCount: 5,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => const Gap(20.0),
+              itemBuilder: (context, index) {
+                return const StackProductShimmer();
+              },
+            ),
           );
         }
         if (state is RecipeLoaded) {
@@ -51,7 +63,14 @@ class StackProductWidget extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const SizedBox(),
-                                Text(recipe.title),
+                                Text(
+                                  recipe.title,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -60,27 +79,21 @@ class StackProductWidget extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text("Time"),
-                                        Text("${recipe.cookingTime} Mins"),
+                                        const Text(
+                                          "Time",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Text(
+                                          "${recipe.cookingTime} Mins",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                    InkWell(
-                                      onTap: () {},
-                                      splashColor: Colors.blue.withOpacity(0.9),
-                                      highlightColor: Colors.transparent,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Image.asset(
-                                          'assets/icons/bookmark.png',
-                                          // color: const Color(0xff71B1A1),
-                                          width: 16,
-                                        ),
-                                      ),
-                                    ),
+                                    const FavoriteButton()
                                   ],
                                 )
                               ],
@@ -103,13 +116,36 @@ class StackProductWidget extends StatelessWidget {
                           recipe.imageUrl,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              child: Image.network(
-                                "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                                fit: BoxFit.cover,
-                              ),
+                            return Image.network(
+                              "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                              fit: BoxFit.cover,
                             );
                           },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 45,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 5.0,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: const Color(0xffFFE1B3),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              size: 16.0,
+                              color: Color(0xffFFAD30),
+                            ),
+                            const Gap(3.0),
+                            Text(recipe.rating.toString()),
+                          ],
                         ),
                       ),
                     ),

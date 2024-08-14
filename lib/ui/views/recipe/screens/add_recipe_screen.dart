@@ -276,6 +276,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             comments: [],
                             createdAt: DateTime.now(),
                             updatedAt: DateTime.now(),
+                            rating: 0.0,
                           );
 
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
@@ -301,9 +302,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       child: const Text(
                         "Qo'shish",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

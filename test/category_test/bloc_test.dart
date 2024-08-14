@@ -26,9 +26,9 @@ void main() {
       when(mockCategoryRepository.getCategory()).thenAnswer(
         (_) async => [
           CategoriesModel(
-            id: "1",
+            id: '',
             name: 'Category 1',
-            categoryId: "",
+            categoryId: '',
           ),
         ],
       );
@@ -39,9 +39,10 @@ void main() {
       CategoryState(isLoading: true),
       CategoryState(category: [
         CategoriesModel(
-          id: "",
+          id: '',
           name: 'Category 1',
-          categoryId: "",
+          categoryId: '',
+
         ),
       ], isLoading: false),
     ],

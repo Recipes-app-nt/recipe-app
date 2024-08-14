@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> screens = [
     const HomeScreen(),
     const SavedRecipesScreen(),
-    const AddRecipeScreen(),
+    // const AddRecipeScreen(),
     const NotificationsScreen(),
     const ProfileScreen(),
   ];
@@ -35,9 +35,11 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: const Color(0xFF129575),
         shape: const CircleBorder(),
         onPressed: () {
-          currentScreen = screens[2];
-          setState(() {});
-          currentTab = 4;
+          // currentScreen = screens[2];
+          // setState(() {});
+          // currentTab = 4;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => AddRecipeScreen()));
         },
         child: const Icon(
           Icons.add,
@@ -108,9 +110,11 @@ class _MainScreenState extends State<MainScreen> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: SvgPicture.asset(currentTab == 2
-                          ? "assets/icons/notification-active.svg"
-                          : "assets/icons/notification.svg"),
+                      child: SvgPicture.asset(
+                        currentTab == 2
+                            ? "assets/icons/notification-active.svg"
+                            : "assets/icons/notification.svg",
+                      ),
                     ),
                   ),
                   MaterialButton(

@@ -193,7 +193,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    
                     BlocBuilder<CategoryBloc, CategoryState>(
                       builder: (context, state) {
                         if (state.isLoading) {
@@ -224,11 +223,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           ),
                           items: categoryItems,
                           onChanged: (CategoriesModel? value) {
-
                             setState(() {
                               selectedCategory = value!.categoryId;
-                              categoryController.text = value
-                                  .name;
+                              categoryController.text = value.name;
                             });
                           },
                           validator: (value) => value == null
@@ -256,6 +253,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             comments: [],
                             createdAt: DateTime.now(),
                             updatedAt: DateTime.now(),
+                            rating: 0.0,
                           );
 
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
@@ -272,9 +270,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       child: const Text(
                         "Qo'shish",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

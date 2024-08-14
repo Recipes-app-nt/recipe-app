@@ -25,9 +25,10 @@ void main() {
     build: () {
       when(mockCategoryRepository.getCategory()).thenAnswer(
         (_) async => [
-          Category(
+          CategoriesModel(
+            id: '',
             name: 'Category 1',
-            recipeIds: ['test id'],
+            categoryId: '',
           ),
         ],
       );
@@ -37,9 +38,10 @@ void main() {
     expect: () => [
       CategoryState(isLoading: true),
       CategoryState(category: [
-        Category(
+        CategoriesModel(
+          id: '',
           name: 'Category 1',
-          recipeIds: ['test id'],
+          categoryId: '',
         ),
       ], isLoading: false),
     ],

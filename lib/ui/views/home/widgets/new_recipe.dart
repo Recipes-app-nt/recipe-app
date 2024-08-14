@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:recipe_app/ui/views/home/widgets/shimmers/new_recipe_shimmer.dart';
 
 import '../../../../blocs/recipe/recipe_bloc.dart';
 import '../../../../blocs/recipe/recipe_event.dart';
@@ -16,8 +17,17 @@ class NewRecipe extends StatelessWidget {
       builder: (context, state) {
         print(state);
         if (state is RecipeLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return SizedBox(
+            height: 180,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              itemCount: 5, 
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => const Gap(20.0),
+              itemBuilder: (context, index) {
+                return const NewRecipeShimmer();
+              },
+            ),
           );
         }
         if (state is RecipeLoaded) {
@@ -58,7 +68,6 @@ class NewRecipe extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const SizedBox(),
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width / 2,
                                   child: Text(
@@ -88,13 +97,13 @@ class NewRecipe extends StatelessWidget {
                                         CircleAvatar(
                                           backgroundColor: Colors.teal,
                                         ),
-                                        const Gap(10.0),
+                                        Gap(10.0),
                                         Text(
                                           "By James Milner",
                                           style: TextStyle(
                                             color: Colors.grey,
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                     Text(
@@ -104,7 +113,7 @@ class NewRecipe extends StatelessWidget {
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ),

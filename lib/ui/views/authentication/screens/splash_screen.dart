@@ -5,6 +5,7 @@ import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/data/services/get_it.dart';
 import 'package:recipe_app/ui/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/views/authentication/screens/login_screen.dart';
+import 'package:recipe_app/ui/views/main_screen.dart';
 import 'package:toastification/toastification.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _loadNextPage() {
     Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 2),
       () {
         if (!mounted) return;
         Navigator.of(context).pushReplacement(
@@ -65,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 },
                 builder: (context, state) {
                   if (state is AuthAuthenticated) {
-                    return const HomeScreen();
+                    return const MainScreen();
                   } else {
                     return const LoginScreen();
                   }

@@ -7,7 +7,7 @@ class DioClient {
     _dio.options
       ..connectTimeout = const Duration(seconds: 5)
       ..receiveTimeout = const Duration(seconds: 3)
-      ..baseUrl = "https://jaguar-c9cc8-default-rtdb.firebaseio.com/";
+      ..baseUrl = "https://lesson66-e0c3e-default-rtdb.firebaseio.com/";
   }
 
   static final _singletonConstructor = DioClient._private();

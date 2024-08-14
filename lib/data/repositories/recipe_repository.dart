@@ -26,7 +26,7 @@ class RecipeRepository {
     return await _recipeService.getAllRecipes();
   }
 
-  Future<String?> uploadMedia(String filePath) async {
-    return await imageService.uploadMedia(filePath);
+  Future<String?> uploadMedia(String filePath, String mediaType) async {
+    return await imageService.uploadMedia(filePath, mediaType: mediaType);
   }
 }

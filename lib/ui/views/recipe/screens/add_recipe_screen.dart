@@ -137,7 +137,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           ),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: const Center(
+                        child: imageUrl != null && videoUrl == null
+                            ? const Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -145,7 +146,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               Text("Rasm yoki Video yuklash"),
                             ],
                           ),
-                        ),
+                        ) : const Center(child: Icon(Icons.check,size: 60, color: Colors.green,))
                       ),
                     ),
                     const SizedBox(height: 20),

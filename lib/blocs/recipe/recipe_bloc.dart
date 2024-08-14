@@ -16,6 +16,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
     try {
       final recipes = await repository.getAllRecipes();
+      print(recipes);
       emit(RecipeLoaded(recipes));
     } catch (e) {
       emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
@@ -24,7 +25,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   void _onAddRecipe(AddRecipe event, Emitter<RecipeState> emit) async {
     try {
-     final res = await repository.addRecipe(event.recipe);
+      final res = await repository.addRecipe(event.recipe);
       add(LoadRecipes());
     } catch (e) {
       emit(RecipeError("Malumotni qo'shishda xatolik mavjud $e"));

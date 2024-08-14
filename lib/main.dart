@@ -6,7 +6,7 @@ import 'package:recipe_app/core/app.dart';
 import 'package:recipe_app/data/services/get_it.dart';
 import 'package:recipe_app/firebase_options.dart';
 
-void main(List<String> args) async{
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

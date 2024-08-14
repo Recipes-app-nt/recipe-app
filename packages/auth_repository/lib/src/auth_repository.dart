@@ -10,7 +10,7 @@ class AuthService {
       String email, String password, String query) async {
     try {
       final response = await dio.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:$query?key=AIzaSyBUQzviZANpeTc2dtACHPdDlPtVxX1NJF4",
+        "https://identitytoolkit.googleapis.com/v1/accounts:$query?key=AIzaSyDJn3jvXB3MWQ03X3wMhPnbQTx9-Mkl6oo",
         data: {
           "email": email,
           "password": password,

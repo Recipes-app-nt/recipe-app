@@ -36,5 +36,5 @@ class DioCategroiesService {
 //   DioCategroiesService dioCategroiesService = DioCategroiesService();
 
 //   final res = await dioCategroiesService.getCategories();
-//   print(res[0].name);
+//   print(res);
 // }

@@ -9,7 +9,7 @@ import 'package:recipe_app/data/repositories/recipe_repository.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/category/category_bloc.dart';
 import '../data/services/get_it.dart';
-import '../ui/home/screens/home_screen.dart';
+import '../ui/views/home/screens/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: HomeScreen(),
         ),
       ),
     );

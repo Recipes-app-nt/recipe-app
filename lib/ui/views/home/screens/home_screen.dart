@@ -5,9 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_event.dart';
 import 'package:recipe_app/blocs/recipe/recipe_state.dart';
-import 'package:recipe_app/ui/home/widgets/profile_info_widget.dart';
-import 'package:recipe_app/ui/home/widgets/search_field.dart';
-import 'package:recipe_app/ui/home/widgets/stack_product_widget.dart';
+import 'package:recipe_app/ui/views/home/widgets/new_recipe.dart';
+import 'package:recipe_app/ui/views/home/widgets/profile_info_widget.dart';
+import 'package:recipe_app/ui/views/home/widgets/search_field.dart';
+import 'package:recipe_app/ui/views/home/widgets/stack_product_widget.dart';
 
 import '../widgets/categories_widget.dart';
 
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -29,7 +30,24 @@ class HomeScreen extends StatelessWidget {
               const Gap(10.0),
               const MyCategoriesRow(),
               // const Gap(70.0),
-              StackProductWidget()
+              const StackProductWidget(),
+
+              //* Category text style
+              const Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Text(
+                      "New Recipes",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              NewRecipe(),
             ],
           ),
         ),

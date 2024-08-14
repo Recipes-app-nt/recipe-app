@@ -17,7 +17,10 @@ void setUp() {
     ),
   );
   getIt.registerSingleton(
-      CategoryBloc(categoryRepository: getIt.get<CategoryRepository>()));
+    CategoryBloc(
+      categoryRepository: getIt.get<CategoryRepository>(),
+    ),
+  );
 }
 
 void setUpAuth() {

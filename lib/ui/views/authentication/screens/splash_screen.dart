@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/auth/auth_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/data/services/get_it.dart';
-import 'package:recipe_app/ui/home/screens/home_screen.dart';
+import 'package:recipe_app/ui/views/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/views/authentication/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _startAnimation();
     _loadNextPage();
-    context.read<CategoryBloc>().add(GetCategory());
+    // context.read<CategoryBloc>().add(GetCategory());
   }
 
   void _loadNextPage() {

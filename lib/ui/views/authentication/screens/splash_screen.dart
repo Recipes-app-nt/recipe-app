@@ -5,6 +5,7 @@ import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/data/services/get_it.dart';
 import 'package:recipe_app/ui/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/views/authentication/screens/login_screen.dart';
+import 'package:toastification/toastification.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
               return BlocConsumer(
                 bloc: getIt.get<AuthBloc>()..add(CheckTokenExpiry()),
                 listener: (context, state) {
-                  print(state);
                   if (state is AuthLoading) {
                     showDialog(
                       context: context,
@@ -51,11 +51,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   if (state is AuthError) {
                     Navigator.of(context).pop();
 
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(state.message),
-                      ),
+                    toastification.show(
+                      closeOnClick: true,
+                      autoCloseDuration: const Duration(seconds: 2),
+                      showProgressBar: true,
+                      title: Text(state.message),
+                      type: ToastificationType.error,
                     );
                   }
                   if (state is AuthAuthenticated) {

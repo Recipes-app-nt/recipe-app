@@ -1,2 +1,2 @@
 export 'src/auth_repository.dart';
-export 'models/user.dart';
+export 'src/models/user.dart';

@@ -42,6 +42,7 @@ void main() {
           id: '',
           name: 'Category 1',
           categoryId: '',
+
         ),
       ], isLoading: false),
     ],

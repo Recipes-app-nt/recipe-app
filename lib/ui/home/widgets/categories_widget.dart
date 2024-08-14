@@ -17,7 +17,7 @@ class _MyCategoriesRowState extends State<MyCategoriesRow> {
   @override
   void initState() {
     super.initState();
-    context.read<CategoryBloc>().add(GetCategory());
+    
   }
 
   @override

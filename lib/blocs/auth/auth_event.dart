@@ -10,8 +10,13 @@ abstract class AuthEvent extends Equatable {
 class AuthRegister extends AuthEvent {
   final String email;
   final String password;
+  final String username;
 
-  const AuthRegister(this.email, this.password);
+  const AuthRegister(
+    this.email,
+    this.password,
+    this.username,
+  );
 
   @override
   List<Object> get props => [email, password];
@@ -26,6 +31,7 @@ class AuthSignIn extends AuthEvent {
   @override
   List<Object> get props => [email, password];
 }
+
 class CheckTokenExpiry extends AuthEvent {}
 
 class AuthLogout extends AuthEvent {}

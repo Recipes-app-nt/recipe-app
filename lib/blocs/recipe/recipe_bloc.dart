@@ -11,6 +11,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<AddRecipe>(_onAddRecipe);
     on<UpdateRecipe>(_onUpdateRecipe);
     on<DeleteRecipe>(_onDeleteRecipe);
+    on<UploadMedia>(_onUploadMedia);
   }
 
   void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
@@ -24,7 +25,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   void _onAddRecipe(AddRecipe event, Emitter<RecipeState> emit) async {
     try {
-     final res = await repository.addRecipe(event.recipe);
+      final res = await repository.addRecipe(event.recipe);
       add(LoadRecipes());
     } catch (e) {
       emit(RecipeError("Malumotni qo'shishda xatolik mavjud $e"));
@@ -46,6 +47,22 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       add(LoadRecipes());
     } catch (e) {
       emit(RecipeError("Malumotni o'chirishda xatolik mavjud $e"));
+    }
+  }
+
+  void _onUploadMedia(UploadMedia event, Emitter<RecipeState> emit) async {
+    emit(MediaUploadInProgress());
+
+    try {
+      final mediaLink = await repository.uploadMedia(event.path);
+
+      if (mediaLink != null) {
+        emit(MediaUploadSuccess(mediaLink));
+      } else {
+        emit(MediaUploadFailure("Yuklashda xatolik"));
+      }
+    } catch (e) {
+      emit(MediaUploadFailure("Yuklashda xatolik: $e"));
     }
   }
 }

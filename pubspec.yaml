@@ -53,6 +53,7 @@ dependencies:
   toastification: ^2.1.0
   firebase_messaging: ^14.7.10
   readmore: ^3.0.0
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:

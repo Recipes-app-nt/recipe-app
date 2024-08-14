@@ -3,7 +3,7 @@ class User {
   final String username;
   final String email;
   final String profilePicture;
-
+  final String fcmToken;
   final String bio;
   final List<String> favoriteDishes;
 
@@ -11,6 +11,7 @@ class User {
     required this.id,
     required this.username,
     required this.email,
+    required this.fcmToken,
     required this.profilePicture,
     required this.bio,
     required this.favoriteDishes,
@@ -21,6 +22,7 @@ class User {
       id: id,
       username: json['username'] ?? '',
       email: json['email'] ?? '',
+      fcmToken: json['fcmToken'] ?? '',
       profilePicture: json['profile_picture'] ?? '',
       bio: json['bio'] ?? '',
       favoriteDishes: List<String>.from(json['favorite_dishes'] ?? []),
@@ -33,6 +35,7 @@ class User {
       'email': email,
       'profile_picture': profilePicture,
       'bio': bio,
+      'fcmToken': fcmToken,
       'favorite_dishes': favoriteDishes,
     };
   }

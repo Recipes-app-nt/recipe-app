@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:recipe_app/blocs/auth/auth_bloc.dart';
+import 'package:recipe_app/data/services/get_it.dart';
 
 class ProfileInfoWidget extends StatelessWidget {
   const ProfileInfoWidget({super.key});
@@ -30,15 +32,21 @@ class ProfileInfoWidget extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            alignment: Alignment.center,
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: const Color(0xffFFCE80),
+          GestureDetector(
+            onDoubleTap: () {
+              print("Log out");
+              getIt.get<AuthBloc>().add(AuthLogout());
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xffFFCE80),
+              ),
+              child: Image.asset('assets/images/emoji.png'),
             ),
-            child: Image.asset('assets/images/emoji.png'),
           ),
         ],
       ),

@@ -6,64 +6,55 @@ import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 class ImageService {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
 
   Future<String?> uploadMedia(String filePath, {required String mediaType}) async {
     try {
-      print("================FIrebase Storage ishladi========================");
-
       final file = File(filePath);
-      File compressedFile;
+      File uploadFile;
 
-      // Media turini tekshirish va compress qilish
       if (mediaType == 'image') {
-        compressedFile = await compressImage(file);
+        // Agar media turi rasm bo'lsa, siqish amalga oshiriladi
+        uploadFile = await compressImage(file);
       } else if (mediaType == 'video') {
-        compressedFile = await compressVideo(file);
+        // Agar media turi video bo'lsa, siqmasdan faylni yuklash uchun tayyorlanadi
+        uploadFile = file;
       } else {
-        throw Exception('Unsupported media type');
+        throw Exception('Noto\'g\'ri media turi');
       }
 
-      // Faylni yuklash uchun kerakli ma'lumotlarni olish
-      final fileName = path.basename(compressedFile.path);
-      print("===================Basenamedan o'tdi");
+      // Fayl nomini olish
+      final fileName = path.basename(uploadFile.path);
 
-      // Yuklash jarayonini amalga oshirish
-      final uploadTask = _firebaseStorage.ref(fileName).putFile(compressedFile);
-      print("=====================UPLOADDAN HAM OTDI==============");
+      // Firebase Storage ga yuklash
+      final uploadTask = _firebaseStorage.ref(fileName).putFile(uploadFile);
 
-      // Yuklashning holatini tekshirish
+      // Yuklash tugashi bilan download URL ni olish
       final snapshot = await uploadTask.whenComplete(() => {});
       final downloadUrl = await snapshot.ref.getDownloadURL();
-      print("====================Malumotrar muovvafaqiyatl saqlandi $downloadUrl");
 
+      print("Media muvaffaqiyatli yuklandi: $downloadUrl");
       return downloadUrl;
     } catch (e) {
-      print("===================================Faylni yuklashda xato yuz berdi: $e");
+      print("Faylni yuklashda xato yuz berdi: $e");
       return null;
     }
   }
 
   Future<File> compressImage(File file) async {
+    // Rasmni o'qish
     final img.Image? image = img.decodeImage(await file.readAsBytes());
     if (image == null) {
-      throw Exception('Failed to decode image');
+      throw Exception('Rasmni dekodlashda xato');
     }
+
+    // Rasmni o'lchamini kichraytirish
     final img.Image resizedImage = img.copyResize(image, width: 800);
+
+    // Siqilgan rasmni saqlash
     final compressedFile = File('${path.dirname(file.path)}/compressed_${path.basename(file.path)}');
     await compressedFile.writeAsBytes(img.encodeJpg(resizedImage, quality: 75));
+
     return compressedFile;
   }
-
-  Future<File> compressVideo(File file) async {
-    final fileName = path.basenameWithoutExtension(file.path);
-    final fileExtension = path.extension(file.path);
-    final compressedFilePath = '${path.dirname(file.path)}/compressed_${fileName}_compressed$fileExtension';
-    final command = '-i ${file.path} -vcodec libx264 -crf 28 $compressedFilePath';
-    final result = await _flutterFFmpeg.execute(command);
-    if (result != 0) {
-      throw Exception('Failed to compress video');
-    }
-    return File(compressedFilePath);
-  }
 }
+

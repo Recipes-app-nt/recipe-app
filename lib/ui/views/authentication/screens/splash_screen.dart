@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/auth/auth_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/data/services/get_it.dart';
-import 'package:recipe_app/ui/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/views/authentication/screens/login_screen.dart';
 import 'package:recipe_app/ui/views/main_screen.dart';
 import 'package:toastification/toastification.dart';

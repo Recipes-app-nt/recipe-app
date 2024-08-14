@@ -5,8 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_event.dart';
 import 'package:recipe_app/blocs/recipe/recipe_state.dart';
-import 'package:recipe_app/ui/home/widgets/profile_info_widget.dart';
-import 'package:recipe_app/ui/home/widgets/search_field.dart';
+import 'package:recipe_app/ui/views/home/widgets/profile_info_widget.dart';
+import 'package:recipe_app/ui/views/home/widgets/search_field.dart';
 
 import '../widgets/categories_widget.dart';
 

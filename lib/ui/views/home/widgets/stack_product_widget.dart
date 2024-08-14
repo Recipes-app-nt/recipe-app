@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-import '../../../blocs/recipe/recipe_bloc.dart';
-import '../../../blocs/recipe/recipe_event.dart';
-import '../../../blocs/recipe/recipe_state.dart';
+import '../../../../blocs/recipe/recipe_bloc.dart';
+import '../../../../blocs/recipe/recipe_event.dart';
+import '../../../../blocs/recipe/recipe_state.dart';
 
 class StackProductWidget extends StatelessWidget {
   const StackProductWidget({super.key});

@@ -8,6 +8,8 @@ import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
 
+import '../../../data/models/recipe_model.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -205,11 +207,10 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                         if (state is RecipeLoaded) {
                           final recipes = state.recipes;
-
                           return ListView.builder(
                             itemCount: recipes.length,
                             itemBuilder: (context, index) {
-                              // final recipe = Recipe.fromJson(recipes[index], id)
+                              final recipe = recipes[index];
                               return Container(
                                 clipBehavior: Clip.hardEdge,
                                 margin: const EdgeInsets.only(top: 20),
@@ -217,9 +218,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 height: 150,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
+                                  image:  DecorationImage(
                                     image: NetworkImage(
-                                      "https://i.pinimg.com/originals/82/68/69/826869734a6637abf7efe5fc8aa8e11d.jpg",
+                                      recipe.imageUrl,
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -247,9 +248,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             MainAxisAlignment.spaceBetween,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const Text(
-                                            "Traditional spare ribs backend",
-                                            style: TextStyle(
+                                          Text(
+                                            recipe.title,
+                                            style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,
                                               color: Colors.white,
@@ -266,9 +267,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              const Text(
-                                                "20 min",
-                                                style: TextStyle(
+                                               Text(
+                                                "${recipe.cookingTime} min",
+                                                style: const TextStyle(
                                                   fontSize: 12,
                                                   color: Color(0xFFD9D9D9),
                                                 ),

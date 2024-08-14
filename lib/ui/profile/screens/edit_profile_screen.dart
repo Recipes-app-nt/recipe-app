@@ -8,6 +8,8 @@ import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
@@ -58,10 +60,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon:const  Icon(Icons.save),
             onPressed: _saveProfile,
           ),
         ],
@@ -77,31 +79,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   radius: 50,
                   backgroundImage: _profilePicture != null
                       ? FileImage(_profilePicture!)
-                      : NetworkImage('https://example.com/default-profile-picture.png') as ImageProvider,
-                  child: Icon(Icons.camera_alt),
+                      : const NetworkImage('https://example.com/default-profile-picture.png') as ImageProvider,
+                  child: const Icon(Icons.camera_alt),
                 ),
               ),
-              SizedBox(height: 20),
+             const  SizedBox(height: 20),
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _bioController,
-                decoration: InputDecoration(
+                decoration:const  InputDecoration(
                   labelText: 'Bio',
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
               ),
-              SizedBox(height: 20),
+             const  SizedBox(height: 20),
               TextField(
                 controller: _favoriteDishesController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Favorite Dishes',
                   border: OutlineInputBorder(),
                 ),

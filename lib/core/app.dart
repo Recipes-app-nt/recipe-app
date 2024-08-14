@@ -12,7 +12,6 @@ import 'package:toastification/toastification.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/category/category_bloc.dart';
 import '../data/services/get_it.dart';
-import '../ui/views/main_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

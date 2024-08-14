@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:recipe_app/data/repositories/user_repository.dart';
 
@@ -14,6 +16,7 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
       : _userRepository = userRepository,
         super(InitialUserState()) {
     on<GetUserEvent>(_getUser);
+    on<EditUserEvent>(_editUser);
   }
 
   void _getUser(GetUserEvent event, Emitter<UserStates> emit) async {
@@ -26,4 +29,23 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
       emit(ErrorUserState(e.toString()));
     }
   }
+
+  void _editUser(EditUserEvent event, Emitter<UserStates> emit) async {
+    emit(LoadingUserState());
+
+    try {
+      await _userRepository.editUser(
+        userId: event.userId,
+        username: event.username,
+        profilePicture: event.profilePicture,
+        bio: event.bio,
+      );
+
+      final updatedUser = await _userRepository.getUser(event.userId);
+      emit(LoadedUserState(updatedUser));
+    } catch (e) {
+      emit(ErrorUserState(e.toString()));
+    }
+  }
+
 }

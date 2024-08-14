@@ -21,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool checkBox = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,21 +62,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     'Enter Password',
                     validatePassword,
                     passwordController,
-                    isPassword: true,
                   ),
                   _buildInputField(
                     'Confirm Password',
                     'Retype Password',
                     validateConfirmPassword,
                     confirmController,
-                    isPassword: true,
                   ),
                   Row(
                     children: [
                       Checkbox(
                         side: const BorderSide(color: Colors.orange, width: 2),
-                        value: false,
-                        onChanged: (value) {},
+                        value: checkBox,
+                        onChanged: (value) {
+                          checkBox = value!;
+                          setState(() {});
+                        },
                         activeColor: Colors.orange,
                       ),
                       const Text(
@@ -95,18 +97,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       child: CustomButton(
                         title: "Sign Up",
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            getIt.get<AuthBloc>().add(
-                                  AuthRegister(
-                                    emailController.text,
-                                    passwordController.text,
-                                    nameController.text,
-                                  ),
-                                );
-                          }
-                        },
+                        onPressed: checkBox
+                            ? () {
+                                if (formKey.currentState!.validate()) {
+                                  formKey.currentState!.save();
+                                  getIt.get<AuthBloc>().add(
+                                        AuthRegister(
+                                          emailController.text,
+                                          passwordController.text,
+                                          nameController.text,
+                                        ),
+                                      );
+                                }
+                              }
+                            : null,
                       ),
                     ),
                   ),
@@ -222,9 +226,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String hint,
     String label,
     String? Function(String?)? validator,
-    TextEditingController controller, {
-    bool isPassword = false,
-  }) {
+    TextEditingController controller,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

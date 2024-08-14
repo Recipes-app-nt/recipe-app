@@ -1,16 +1,16 @@
-import 'dart:developer';
-
 import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:recipe_app/data/services/fcm_service.dart';
+import 'package:recipe_app/data/services/user_service.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService authService;
   final _fcmService = FCMService();
+  final _dioUserService = DioUserService();
 
   AuthBloc({required this.authService}) : super(AuthInitial()) {
     on<AuthRegister>(_onRegister);
@@ -24,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await authService.register(event.email, event.password);
       final token = await _fcmService.getToken();
+      _dioUserService.addUser(event.username, event.email, token);
 
       emit(AuthAuthenticated(user));
     } on DioException catch (e) {

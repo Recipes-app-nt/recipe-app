@@ -102,6 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   AuthRegister(
                                     emailController.text,
                                     passwordController.text,
+                                    nameController.text,
                                   ),
                                 );
                           }
@@ -123,9 +124,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: const Color(0xffD9D9D9),
                           )),
                       const Expanded(
-                          child: Divider(
-                        color: Color(0xffD9D9D9),
-                      )),
+                        child: Divider(
+                          color: Color(0xffD9D9D9),
+                        ),
+                      ),
                     ],
                   ),
                   const Gap(20),

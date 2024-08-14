@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:recipe_app/ui/home/screens/home_screen.dart';
+import 'package:recipe_app/ui/views/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/profile/screens/profile_screen.dart';
 import 'package:recipe_app/ui/views/notifications_screen.dart';
 import 'package:recipe_app/ui/views/recipe/screens/add_recipe_screen.dart';

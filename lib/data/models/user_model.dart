@@ -3,6 +3,7 @@ class User {
   final String username;
   final String email;
   final String profilePicture;
+
   final String bio;
   final List<String> favoriteDishes;
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
-
-import 'package:auth_repository/models/user.dart';
+import 'dart:developer';
+import 'package:auth_repository/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,15 +22,14 @@ class AuthService {
         final data = response.data;
         final user = User.fromMap(data);
         _saveUserData(user);
+
         return user;
       }
-
       throw response.data['error']['message'];
     } on DioException catch (e) {
-      print("Dio Error:  $e");
       rethrow;
     } catch (e) {
-      print("Dio Error:  $e");
+      print("Error:  $e");
 
       rethrow;
     }
@@ -79,7 +78,7 @@ class AuthService {
 
   Future<void> _saveUserData(User user) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    
+
     print(user.expiresIn);
     sharedPreferences.setString(
       'userData',

@@ -40,3 +40,13 @@ class DeleteRecipe extends RecipeEvent {
   @override
   List<Object> get props => [id];
 }
+
+class UploadMedia extends RecipeEvent {
+  final String path;
+  final String mediaType;
+  
+   UploadMedia(this.path, this.mediaType);
+  
+  @override
+  List<Object> get props => [path, mediaType];
+}

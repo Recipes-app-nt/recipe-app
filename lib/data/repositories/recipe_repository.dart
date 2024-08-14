@@ -1,8 +1,10 @@
 import 'package:recipe_app/data/models/recipe_model.dart';
+import 'package:recipe_app/data/services/image_service.dart';
 import 'package:recipe_app/data/services/recipe_service.dart';
 
 class RecipeRepository {
   final _recipeService = RecipeService();
+  final imageService = ImageService();
 
   Future<void> addRecipe(Recipe recipe) async {
     await _recipeService.addRecipe(recipe);
@@ -22,5 +24,9 @@ class RecipeRepository {
 
   Future<List<Recipe>> getAllRecipes() async {
     return await _recipeService.getAllRecipes();
+  }
+
+  Future<String?> uploadMedia(String filePath) async {
+    return await imageService.uploadMedia(filePath);
   }
 }

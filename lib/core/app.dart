@@ -5,6 +5,7 @@ import 'package:recipe_app/data/repositories/category_repository.dart';
 import 'package:recipe_app/ui/views/authentication/screens/login_screen.dart';
 import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
+import 'package:recipe_app/ui/views/recipe/screens/add_recipe_screen.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/category/category_bloc.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: AddRecipeScreen(),
         ),
       ),
     );

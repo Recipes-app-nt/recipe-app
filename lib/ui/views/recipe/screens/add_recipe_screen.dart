@@ -5,11 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/data/models/category_model.dart';
-import 'package:recipe_app/data/models/comment_model.dart';
-import 'package:recipe_app/data/models/like_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 import 'package:recipe_app/data/services/media_picker_service.dart';
-import 'package:recipe_app/ui/views/recipe/screens/edit_recipe_screen.dart';
 import 'package:recipe_app/ui/widgets/custom_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -282,7 +279,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             updatedAt: DateTime.now(),
                             rating: 0.0,
                           );
-
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
                           clearController();
                           imageUrl = null;

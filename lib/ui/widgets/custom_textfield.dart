@@ -4,7 +4,6 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String? labelText;
   final String? hintText;
-
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
 

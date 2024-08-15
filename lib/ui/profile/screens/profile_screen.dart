@@ -6,7 +6,7 @@ import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
-
+import 'package:recipe_app/ui/views/recipe/screens/edit_recipe_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -216,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 height: 150,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  image:  DecorationImage(
+                                  image: DecorationImage(
                                     image: NetworkImage(
                                       recipe.imageUrl,
                                     ),
@@ -265,13 +265,62 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                               Text(
+                                              Text(
                                                 "${recipe.cookingTime} min",
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   color: Color(0xFFD9D9D9),
                                                 ),
-                                              )
+                                              ),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditRecipeScreen(
+                                                                    recipe:
+                                                                        recipe)));
+                                                  },
+                                                  icon: Icon(Icons.edit)),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                                "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz? "),
+                                                            content: Row(
+                                                              children: [
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        "Yo'q")),
+                                                                FilledButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      context
+                                                                          .read<
+                                                                              RecipeBloc>()
+                                                                          .add(DeleteRecipe(
+                                                                              recipe.id));
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        "Ha"))
+                                                              ],
+                                                            ),
+                                                          );
+                                                        });
+                                                  },
+                                                  icon: Icon(Icons.delete,
+                                                      color: Colors.red)),
                                             ],
                                           )
                                         ],

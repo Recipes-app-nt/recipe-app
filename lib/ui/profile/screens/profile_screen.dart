@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
-import 'package:recipe_app/blocs/recipe/recipe_state.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';

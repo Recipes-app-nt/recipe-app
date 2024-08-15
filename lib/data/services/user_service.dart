@@ -105,7 +105,8 @@ class DioUserService {
     }
   }
 
-  Future<void> addUser(String userName, String email, String? fcmToken) async {
+  Future<void> addUser(
+      String userName, String email, String? fcmToken, String uuid) async {
     try {
       final response = await _dio.add(
         url: "users.json",
@@ -113,24 +114,10 @@ class DioUserService {
           "username": userName,
           "email": email,
           "favoriteDishes": [],
+          "uuid": uuid,
           "fcmToken": fcmToken,
         },
       );
-
-      final data = response.data;
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        'userInfo',
-        jsonEncode({
-          "email": email,
-          "username": userName,
-          "favoriteDishes": [],
-          'id': data["name"],
-        }),
-      );
-
-      print(prefs.getString('userInfo'));
     } catch (e) {
       rethrow;
     }
@@ -143,37 +130,39 @@ class DioUserService {
     String? bio,
   }) async {
     // try {
-      Map<String, dynamic> updatedData = {};
+    Map<String, dynamic> updatedData = {};
 
-      if (username != null) updatedData['username'] = username;
-      if (bio != null) updatedData['bio'] = bio;
+    if (username != null) updatedData['username'] = username;
+    if (bio != null) updatedData['bio'] = bio;
 
-      if (profilePicture != null) {
-        // Upload the image to Firebase Storage
-        String fileName = path.basename(profilePicture.path);
-        Reference storageRef = _storage.ref().child('profile_pictures/$userId/$fileName');
+    if (profilePicture != null) {
+      // Upload the image to Firebase Storage
+      String fileName = path.basename(profilePicture.path);
+      Reference storageRef =
+          _storage.ref().child('profile_pictures/$userId/$fileName');
 
-        UploadTask uploadTask = storageRef.putFile(profilePicture);
-        TaskSnapshot snapshot = await uploadTask;
+      UploadTask uploadTask = storageRef.putFile(profilePicture);
+      TaskSnapshot snapshot = await uploadTask;
 
-        String downloadUrl = await snapshot.ref.getDownloadURL();
-        updatedData['profile_picture'] = downloadUrl;
-      }
-
-      final response = await _dio.update(
-        url: 'users/$userId.json',
-        data: updatedData,
-      );
-
-      if (response.data != null) {
-        final prefs = await SharedPreferences.getInstance();
-        final userInfo = jsonDecode(prefs.getString('userInfo')!);
-        userInfo.addAll(updatedData);
-        await prefs.setString('userInfo', jsonEncode(userInfo));
-
-        print('User updated: ${response.data}');
-      }
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      updatedData['profile_picture'] = downloadUrl;
     }
+
+    final response = await _dio.update(
+      url: 'users/$userId.json',
+      data: updatedData,
+    );
+
+    if (response.data != null) {
+      final prefs = await SharedPreferences.getInstance();
+      final userInfo = jsonDecode(prefs.getString('userInfo')!);
+      userInfo.addAll(updatedData);
+      await prefs.setString('userInfo', jsonEncode(userInfo));
+
+      print('User updated: ${response.data}');
+    }
+  }
+
   Future<void> updateUserFavorites(
       String userId, List<String> favorites) async {
     try {

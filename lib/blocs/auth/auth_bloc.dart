@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -24,8 +26,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await authService.register(event.email, event.password);
       final token = await _fcmService.getToken();
-      _dioUserService.addUser(event.username, event.email, token);
-
+      _dioUserService.addUser(
+        event.username,
+        event.email,
+        token,
+        user.localId,
+      );
       emit(AuthAuthenticated(user));
     } on DioException catch (e) {
       emit(AuthError(e.response?.data["error"]['message']));

@@ -115,19 +115,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   const Gap(14),
-                  Row(
+                  const Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                           child: Divider(
                         color: Color(0xffD9D9D9),
                       )),
                       Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 16),
                           child: CustomText(
                             text: "Or Sign in With",
-                            color: const Color(0xffD9D9D9),
+                            color: Color(0xffD9D9D9),
                           )),
-                      const Expanded(
+                      Expanded(
                         child: Divider(
                           color: Color(0xffD9D9D9),
                         ),
@@ -201,10 +201,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return 'Password must be at least 8 characters long';
     }
 
-    if (!value.contains(RegExp(r'[A-Z]')) ||
-        !value.contains(RegExp(r'[a-z]')) ||
+    if (!value.contains(RegExp(r'[a-z]')) ||
         !value.contains(RegExp(r'[0-9]'))) {
-      return 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+      return 'Password must contain at one lowercase letter, and one number';
     }
 
     return null;

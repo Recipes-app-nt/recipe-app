@@ -26,8 +26,7 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
 
     final prefs = await SharedPreferences.getInstance();
 
-    final userInfo = jsonDecode(prefs
-        .getString("userInfo")!); //
+    final userInfo = jsonDecode(prefs.getString("userInfo")!); //
 
     try {
       final user = await _userRepository.getUser(userInfo['id']);

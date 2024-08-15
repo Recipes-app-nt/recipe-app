@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,12 +79,13 @@ class AuthService {
   Future<void> _saveUserData(User user) async {
     final sharedPreferences = await SharedPreferences.getInstance();
 
-    print(user.expiresIn);
     sharedPreferences.setString(
       'userData',
       jsonEncode(
         user.toMap(),
       ),
     );
+    final data = jsonDecode(sharedPreferences.getString("userData")!);
+    print(sharedPreferences.getString('userData'));
   }
 }

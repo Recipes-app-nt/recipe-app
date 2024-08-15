@@ -19,7 +19,7 @@ class ImageService {
         // Agar media turi video bo'lsa, siqmasdan faylni yuklash uchun tayyorlanadi
         uploadFile = file;
       } else {
-        throw Exception('Noto\'g\'ri media turi');
+        throw Exception("Noto'g'ri media turi");
       }
 
       // Fayl nomini olish

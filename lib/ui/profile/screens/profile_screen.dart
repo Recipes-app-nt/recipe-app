@@ -5,6 +5,9 @@ import 'package:gap/gap.dart';
 import 'package:readmore/readmore.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
+import 'package:recipe_app/blocs/video_player/video_bloc.dart';
+import 'package:recipe_app/blocs/video_player/video_event.dart';
+import 'package:recipe_app/blocs/video_player/video_state.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
 import 'package:recipe_app/ui/views/recipe/screens/edit_recipe_screen.dart';
@@ -21,19 +24,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   User? newUser;
-  late VideoPlayerController _controller;
+  int myRetseptsCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-    context.read<RecipeBloc>()..add(GetUserRecipes());
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -41,6 +37,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     _tabController.dispose();
     super.dispose();
   }
+
+  final List<String> videoUrls = [
+    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+    // Boshqa videolarni qo'shing
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     const SizedBox(
                       width: 30,
                     ),
-                    const Column(
+                     Column(
                       children: [
                         Text(
                           "Recipe",
@@ -127,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                         ),
                         Text(
-                          "4",
+                          myRetseptsCount.toString(),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
@@ -220,7 +222,12 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                         if (state is UserRecipeLoaded) {
                           final recipes = state.recipes;
-                          return ListView.separated(
+                          myRetseptsCount = recipes.length;
+                          return recipes.isEmpty ?
+                          const Center(
+                            child: Text("Siz hech qanday retsept yaratmadingiz"),
+                          ) :
+                          ListView.separated(
                             itemCount: recipes.length,
                             separatorBuilder: (context, index) =>
                                 const Gap(20.0),
@@ -263,8 +270,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             MainAxisAlignment.end,
                                         children: [
                                           IconButton.filled(
-                                            onPressed: () {
-                                              Navigator.push(
+                                            onPressed: () async {
+                                               final data =  await Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
@@ -272,6 +279,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                           recipe: recipe),
                                                 ),
                                               );
+
+                                               if(data == true) {
+                                                 context.read<RecipeBloc>().add(GetUserRecipes());
+                                               }
                                             },
                                             icon: const Icon(Icons.edit),
                                           ),
@@ -357,8 +368,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                         return const SizedBox();
                       },
                     ),
-                    const Card(
-                      child: Text("Card 2"),
+                    BlocProvider(
+                      create: (context) => VideoBloc()..add(LoadVideos(videoUrls)),
+                      child: BlocBuilder<VideoBloc, VideoState>(
+
+                        builder: (context, state) {
+                          if (state.controllers.isEmpty) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return ListView.builder(
+                            itemCount: state.controllers.length,
+                              itemBuilder: (context, index) {
+                                final controller =  state.controllers[index];
+                                return controller.value.isInitialized ? AspectRatio(
+                                    aspectRatio: controller.value.aspectRatio,
+                                    child: VideoPlayer(controller),
+                                ) : Center(child: CircularProgressIndicator(),);
+
+                              } );
+                      },),
                     )
                   ]),
                 )

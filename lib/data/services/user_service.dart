@@ -29,8 +29,6 @@ class DioUserService {
         }
       }
 
-      final prefs = await SharedPreferences.getInstance();
-
       return null;
     } on DioException {
       rethrow;
@@ -57,7 +55,7 @@ class DioUserService {
   }
 
   Future<void> editUser({
-    required String userId,
+    required String email,
     String? username,
     File? profilePicture,
     String? bio,
@@ -71,8 +69,7 @@ class DioUserService {
     if (profilePicture != null) {
       // Upload the image to Firebase Storage
       String fileName = path.basename(profilePicture.path);
-      Reference storageRef =
-          _storage.ref().child('profile_pictures/$userId/$fileName');
+      Reference storageRef = _storage.ref().child('profile_pictures/$fileName');
 
       UploadTask uploadTask = storageRef.putFile(profilePicture);
       TaskSnapshot snapshot = await uploadTask;
@@ -80,20 +77,21 @@ class DioUserService {
       String downloadUrl = await snapshot.ref.getDownloadURL();
       updatedData['profile_picture'] = downloadUrl;
     }
+    User? user = await getUserById(email);
 
     final response = await _dio.update(
-      url: 'users/$userId.json',
+      url: 'users/${user!.id}.json',
       data: updatedData,
     );
 
-    if (response.data != null) {
-      final prefs = await SharedPreferences.getInstance();
-      final userInfo = jsonDecode(prefs.getString('userInfo')!);
-      userInfo.addAll(updatedData);
-      await prefs.setString('userInfo', jsonEncode(userInfo));
+    // if (response.data != null) {
+    //   final prefs = await SharedPreferences.getInstance();
+    //   final userInfo = jsonDecode(prefs.getString('userInfo') ?? "");
+    //   userInfo.addAll(updatedData);
+    //   await prefs.setString('userInfo', jsonEncode(userInfo));
 
-      print('User updated: ${response.data}');
-    }
+    //   print('User updated: ${response.data}');
+    // }
   }
 
   Future<void> updateUserFavorites(

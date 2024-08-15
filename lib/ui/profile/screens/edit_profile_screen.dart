@@ -67,11 +67,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final prefs = await SharedPreferences.getInstance();
 
       final userInfo = jsonDecode(prefs
-          .getString("userInfo")!); // Replace with actual user ID from your app
+          .getString("userData")!); // Replace with actual user ID from your app
 
       // Dispatch the EditUserEvent
       context.read<UserBloc>().add(EditUserEvent(
-            userId: userInfo['id'],
+            email: userInfo['email'],
             username: username,
             bio: bio,
             profilePicture: _profilePicture,
@@ -86,12 +86,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           textColor: Colors.white,
           fontSize: 16.0);
 
-      Future.delayed(
-        const Duration(seconds: 2),
-          () {
-          Navigator.of(context).pop();
-          }
-      );
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pop();
+      });
     }
   }
 

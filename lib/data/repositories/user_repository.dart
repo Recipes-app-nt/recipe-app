@@ -15,13 +15,13 @@ class UserRepository {
   }
 
   Future<void> editUser({
-    required String userId,
+    required String email,
     String? username,
     File? profilePicture,
     String? bio,
   }) async {
     await _dioUserService.editUser(
-      userId: userId,
+      email: email,
       username: username,
       profilePicture: profilePicture,
       bio: bio,

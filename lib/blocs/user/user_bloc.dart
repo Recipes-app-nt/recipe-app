@@ -27,7 +27,6 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final userData = jsonDecode(prefs.getString('userData') ?? "");
-      print(userData['email']);
 
       final user = await _userRepository.getUser(userData["email"]);
       if (user != null) {
@@ -44,18 +43,22 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
     emit(LoadingUserState());
 
     try {
+      print("---------------------------------------------------------------");
       await _userRepository.editUser(
-        userId: event.userId,
+        email: event.email,
         username: event.username,
         profilePicture: event.profilePicture,
         bio: event.bio,
       );
+      print("keldid ----------------------------------------");
 
       final updatedUser = await _userRepository.getUser(
-        event.userId,
+        event.email,
       );
+      print(updatedUser);
       emit(LoadedUserState(updatedUser!));
     } catch (e) {
+      print(e);
       emit(ErrorUserState(e.toString()));
     }
   }

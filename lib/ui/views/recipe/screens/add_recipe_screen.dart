@@ -39,7 +39,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     super.initState();
     _initHiveService();
     selectedCategory = "Nonushta";
-    getUserId();
+    getUserEmail();
   }
 
   Future<void> _initHiveService() async {
@@ -64,13 +64,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     print("==================Manimcha localga saqlandi");
   }
 
-  void getUserId()async{
+  void getUserEmail()async{
     final prefs = await SharedPreferences.getInstance();
 
-    final userInfo = jsonDecode( prefs.getString("userInfo")!);
+    final userInfo = jsonDecode( prefs.getString("userData")!);
 
     if(userInfo != null){
-      authorId = userInfo["id"];
+      authorId = userInfo["email"];
     }else{
       print("Foydlanuvchi malumotlari mavjud emas!!!");
     }

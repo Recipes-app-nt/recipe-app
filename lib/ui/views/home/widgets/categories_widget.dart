@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
+import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/data/models/category_model.dart';
+import 'package:recipe_app/data/models/recipe_model.dart';
+import 'package:recipe_app/data/repositories/recipe_repository.dart';
 import 'package:recipe_app/ui/views/home/widgets/shimmers/categories_shimmer.dart';
 
 class MyCategoriesRow extends StatefulWidget {
-  const MyCategoriesRow({super.key});
+  final Function(String) onCategorySelected;
+  const MyCategoriesRow({
+    super.key,
+    required this.onCategorySelected,
+  });
 
   @override
   State<MyCategoriesRow> createState() => _MyCategoriesRowState();
 }
 
 class _MyCategoriesRowState extends State<MyCategoriesRow> {
+  late List<Recipe> recipes;
   String selectedCategoryId = 'all';
-
   @override
   void initState() {
     super.initState();
@@ -65,10 +72,8 @@ class _MyCategoriesRowState extends State<MyCategoriesRow> {
               final isSelected = category.id == selectedCategoryId;
               return GestureDetector(
                 onTap: () {
-                  setState(() {
-                    selectedCategoryId = category.id;
-                  });
-                  print(selectedCategoryId);
+                  print(category.id);
+                  widget.onCategorySelected(category.id);
                 },
                 child: Container(
                   width: 100,

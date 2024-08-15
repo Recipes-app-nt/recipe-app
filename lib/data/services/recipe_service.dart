@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/network/dio_client.dart';
 import '../../hive/services/hive_service.dart';
 
@@ -57,15 +61,32 @@ class RecipeService {
     }
   }
 
-  Future<Recipe?> getRecipeById(String id) async {
+  Future<List<Recipe>> getUserRecipes() async {
     try {
       final response = await _dioClient.get(
-        url: '/recipes/$id.json',
+        url: 'recipes.json',
       );
-      if (response.data != null) {
-        return Recipe.fromJson(response.data, id);
+      final Map<String, dynamic> mapData = response.data;
+
+      List<Recipe> recipes = [];
+
+      final prefs = await SharedPreferences.getInstance();
+
+      final userData = jsonDecode(prefs.getString("userData")??"");
+
+      String email = userData['email'];
+      print(email);
+
+      for (final key in mapData.keys) {
+        final value = mapData[key];
+        print(value['author_id']);
+        if (value['author_id'] == email) {
+          recipes.add(Recipe.fromJson(value, key));
+        }
       }
-      return null;
+      return recipes;
+    } on DioException {
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -94,4 +115,3 @@ class RecipeService {
     }
   }
 }
-

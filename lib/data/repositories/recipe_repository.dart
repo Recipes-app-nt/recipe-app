@@ -18,8 +18,8 @@ class RecipeRepository {
     await _recipeService.deleteRecipe(id);
   }
 
-  Future<Recipe?> getRecipeById(String id) async {
-    return await _recipeService.getRecipeById(id);
+  Future<List<Recipe>> getUserRecipes() async {
+    return await _recipeService.getUserRecipes();
   }
 
   Future<List<Recipe>> getAllRecipes() async {

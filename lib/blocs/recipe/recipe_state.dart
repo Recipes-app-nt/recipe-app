@@ -28,6 +28,15 @@ class RecipeError extends RecipeState {
   List<Object> get props => [message];
 }
 
+class UserRecipeLoaded extends RecipeState {
+  final List<Recipe?> recipes;
+
+  UserRecipeLoaded(this.recipes);
+
+  @override
+  List<Object> get props => [recipes];
+}
+
 /// Mediani yuklayotganda Isolateni ko'rsatish uchun
 class MediaUploadInProgress extends RecipeState {}
 

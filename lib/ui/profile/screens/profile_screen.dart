@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:readmore/readmore.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
 import 'package:recipe_app/ui/views/recipe/screens/edit_recipe_screen.dart';
+import 'package:video_player/video_player.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,16 +19,27 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  late TabController tabController;
+  late TabController _tabController;
   User? newUser;
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      setState(() {});
-    });
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+    context.read<RecipeBloc>()..add(GetUserRecipes());
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -164,34 +177,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                   height: 40,
                 ),
                 TabBar(
-                  controller: tabController,
-                  indicator: const BoxDecoration(
-                      color: Color(0xFF129575),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      )),
-                  indicatorPadding: const EdgeInsets.symmetric(horizontal: -50),
-                  dividerColor: Colors.transparent,
-                  tabs: [
+                  dividerHeight: 0,
+                  labelStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  indicator: BoxDecoration(
+                    color: const Color(0xff129575),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  indicatorPadding: const EdgeInsets.all(3.0),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  controller: _tabController,
+                  tabs: const [
                     Tab(
-                      child: Text(
-                        "Recipe",
-                        style: TextStyle(
-                          color: tabController.index == 0
-                              ? Colors.white
-                              : const Color(0xFF71B1A1),
-                        ),
-                      ),
+                      child: Text("Retseptlar"),
                     ),
                     Tab(
-                      child: Text(
-                        "Videos",
-                        style: TextStyle(
-                          color: tabController.index == 1
-                              ? Colors.white
-                              : const Color(0xFF71B1A1),
-                        ),
-                      ),
+                      child: Text("Videolar"),
                     )
                   ],
                 ),
@@ -199,8 +202,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                   height: 10,
                 ),
                 Expanded(
-                  child: TabBarView(controller: tabController, children: [
+                  child: TabBarView(controller: _tabController, children: [
                     BlocBuilder<RecipeBloc, RecipeState>(
+                      bloc: context.read<RecipeBloc>()..add(GetUserRecipes()),
                       builder: (context, state) {
                         if (state is RecipeLoading) {
                           return const Center(
@@ -214,22 +218,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                           );
                         }
 
-                        if (state is RecipeLoaded) {
+                        if (state is UserRecipeLoaded) {
                           final recipes = state.recipes;
-                          return ListView.builder(
+                          return ListView.separated(
                             itemCount: recipes.length,
+                            separatorBuilder: (context, index) =>
+                                const Gap(20.0),
                             itemBuilder: (context, index) {
                               final recipe = recipes[index];
                               return Container(
                                 clipBehavior: Clip.hardEdge,
-                                margin: const EdgeInsets.only(top: 20),
                                 width: double.infinity,
                                 height: 150,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      recipe.imageUrl,
+                                      recipe!.imageUrl,
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -250,8 +255,63 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          IconButton.filled(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditRecipeScreen(
+                                                          recipe: recipe),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(Icons.edit),
+                                          ),
+                                          IconButton.filled(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      content: Text(
+                                                          "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz?"),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                              "Yo'q"),
+                                                        ),
+                                                        FilledButton(
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    RecipeBloc>()
+                                                                .add(DeleteRecipe(
+                                                                    recipe.id));
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text("Ha"),
+                                                        )
+                                                      ],
+                                                    );
+                                                  });
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                          ),
+                                        ],
+                                      ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -283,55 +343,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   color: Color(0xFFD9D9D9),
                                                 ),
                                               ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                EditRecipeScreen(
-                                                                    recipe:
-                                                                        recipe)));
-                                                  },
-                                                  icon: Icon(Icons.edit)),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz? "),
-                                                            content: Row(
-                                                              children: [
-                                                                TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        "Yo'q")),
-                                                                FilledButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .read<
-                                                                              RecipeBloc>()
-                                                                          .add(DeleteRecipe(
-                                                                              recipe.id));
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        "Ha"))
-                                                              ],
-                                                            ),
-                                                          );
-                                                        });
-                                                  },
-                                                  icon: Icon(Icons.delete,
-                                                      color: Colors.red)),
                                             ],
                                           )
                                         ],

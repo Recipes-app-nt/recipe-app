@@ -72,8 +72,9 @@ class _MyCategoriesRowState extends State<MyCategoriesRow> {
               final isSelected = category.id == selectedCategoryId;
               return GestureDetector(
                 onTap: () {
-                  print(category.id);
-                  widget.onCategorySelected(category.id);
+                  setState(() {
+                    selectedCategoryId = category.id;
+                  });
                 },
                 child: Container(
                   width: 100,

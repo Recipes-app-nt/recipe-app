@@ -57,6 +57,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
               }
 
               if (recipeState is RecipeLoaded) {
+                print(recipeState.recipes);
                 final favoriteRecipes = recipeState.recipes
                     .where((recipe) => user!.favoriteDishes.contains(recipe.id))
                     .toList();

@@ -72,14 +72,15 @@ class RecipeService {
 
       final prefs = await SharedPreferences.getInstance();
 
-      final userData = jsonDecode(prefs.getString("userData")??"");
+      final userData = jsonDecode(prefs.getString("userData") ?? "");
 
       String email = userData['email'];
-      print(email);
+      print("Recipe service print: $email");
 
       for (final key in mapData.keys) {
         final value = mapData[key];
-        print(value['author_id']);
+        print("Yaratuvchilar Email: ${value['author_id']}");
+        print("object");
         if (value['author_id'] == email) {
           recipes.add(Recipe.fromJson(value, key));
         }

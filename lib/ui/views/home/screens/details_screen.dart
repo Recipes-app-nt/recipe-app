@@ -58,10 +58,15 @@ class _DetailsScreenState extends State<DetailsScreen>
                     borderRadius: BorderRadius.circular(26.0),
                   ),
                   width: double.infinity,
-                  child: Image.network(
-                    widget.recipe.imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child: widget.recipe.imageUrl.isNotEmpty
+                      ? Image.network(
+                          widget.recipe.imageUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 Positioned(
                   top: 16,
@@ -269,7 +274,7 @@ class _DetailsScreenState extends State<DetailsScreen>
                                       );
                                     },
                                   )
-                                : const Text("Commentlar mavjud emas55555551"),
+                                : const Text("Commentlar mavjud emas"),
                           ),
                           const Padding(
                             padding: const EdgeInsets.all(16.0),

@@ -26,14 +26,14 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-    context.read<RecipeBloc>()..add(GetUserRecipes());
+    _tabController = TabController(length: 2, vsync: this);
+    // _controller = VideoPlayerController.networkUrl(Uri.parse(
+    //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+    //   ..initialize().then((_) {
+    //     // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+    //     setState(() {});
+    //   });
+    // context.read<RecipeBloc>().add(GetUserRecipes());
   }
 
   @override
@@ -269,7 +269,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       EditRecipeScreen(
-                                                          recipe: recipe),
+                                                    recipe: recipe,
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -297,8 +298,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                             context
                                                                 .read<
                                                                     RecipeBloc>()
-                                                                .add(DeleteRecipe(
-                                                                    recipe.id));
+                                                                .add(
+                                                                  DeleteRecipe(
+                                                                    recipe.id,
+                                                                  ),
+                                                                );
                                                             Navigator.pop(
                                                                 context);
                                                           },

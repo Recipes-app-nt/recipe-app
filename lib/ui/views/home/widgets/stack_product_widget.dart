@@ -8,16 +8,29 @@ import 'package:recipe_app/ui/widgets/favorite_button.dart';
 
 import '../../../../blocs/recipe/recipe_bloc.dart';
 
-class StackProductWidget extends StatelessWidget {
-  final String categoryId;
+class StackProductWidget extends StatefulWidget {
+  // final String categoryId;
 
-  const StackProductWidget({super.key, required this.categoryId});
+  const StackProductWidget({
+    super.key,
+    // required this.categoryId,
+  });
+
+  @override
+  State<StackProductWidget> createState() => _StackProductWidgetState();
+}
+
+class _StackProductWidgetState extends State<StackProductWidget> {
+  @override
+  void initState() {
+    super.initState();
+    // context.read<RecipeBloc>().add(LoadRecipes());
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RecipeBloc, RecipeState>(
-      bloc: context.read<RecipeBloc>()
-        ..add(LoadRecipes(categoryId: categoryId)),
+      bloc: context.read<RecipeBloc>()..add(LoadRecipes()),
       builder: (context, state) {
         if (state is RecipeLoading) {
           return SizedBox(
@@ -122,6 +135,7 @@ class RecipeContainer extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                //! Ushbu qism to'g'rilanishi kerak
                                 FavoriteButton(
                                   favoriteRecipeId: recipe.id,
                                 )

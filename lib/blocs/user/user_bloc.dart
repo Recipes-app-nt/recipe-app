@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:recipe_app/data/repositories/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/models/user_model.dart';
 
@@ -22,8 +24,12 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
   Future<void> _getUser(GetUserEvent event, Emitter<UserStates> emit) async {
     emit(LoadingUserState());
 
+    final prefs = await SharedPreferences.getInstance();
+
+    final userInfo = jsonDecode(prefs.getString("userInfo")!); //
+
     try {
-      final user = await _userRepository.getUser("-O4JPYVX75rFxwiyar26");
+      final user = await _userRepository.getUser(userInfo['id']);
       if (user != null) {
         emit(LoadedUserState(user));
       } else {

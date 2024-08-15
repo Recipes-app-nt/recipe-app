@@ -38,16 +38,21 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   void initState() {
     super.initState();
     selectedCategory = "Nonushta";
-    printid();
+    getUserId();
   }
 
-  void printid()async{
+  void getUserId()async{
     final prefs = await SharedPreferences.getInstance();
 
     final userInfo = jsonDecode( prefs.getString("userInfo")!);
-    authorId = userInfo["id"];
 
-    print("=========================Bu userning id si : $authorId");
+    if(userInfo != null){
+      authorId = userInfo["id"];
+    }else{
+      print("Foydlanuvchi malumotlari mavjud emas!!!");
+    }
+
+
   }
 
   void clearController() {
@@ -205,13 +210,14 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     const SizedBox(height: 20),
                     CustomTextFormField(
                       controller: cookingTimeController,
-                      labelText: "Vaqti",
+                      labelText: "Vaqti(min)",
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return "Iltimos vaqtini kiriting!!!";
                         }
                         return null;
                       },
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 20),
                     BlocBuilder<CategoryBloc, CategoryState>(
@@ -282,10 +288,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           imageUrl = null;
                           videoUrl = null;
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text("Ma'lumotlar saqlandi!!!"),
                               backgroundColor: Colors.green,
-                              duration: const Duration(seconds: 2),
+                              duration: Duration(seconds: 2),
                             ),
                           );
                         }

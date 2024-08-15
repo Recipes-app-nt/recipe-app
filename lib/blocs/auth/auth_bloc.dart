@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignIn>(_onSignIn);
     on<AuthLogout>(_onLogout);
     on<CheckTokenExpiry>(_onCheckTokenExpiry);
+    on<AuthResetPassword>(_onResetPassword);
   }
 
   Future<void> _onRegister(AuthRegister event, Emitter<AuthState> emit) async {
@@ -35,6 +36,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(user));
     } on DioException catch (e) {
       emit(AuthError(e.response?.data["error"]['message']));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onResetPassword(
+      AuthResetPassword event, Emitter<AuthState> emit) async {
+    try {
+      await authService.resetPassword(event.email);
     } catch (e) {
       emit(AuthError(e.toString()));
     }

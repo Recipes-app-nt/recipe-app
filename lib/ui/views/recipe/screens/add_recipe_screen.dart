@@ -307,6 +307,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           );
                           await _saveRecipeToHive(recipe);
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
+                          Navigator.pop(context);
                           clearController();
                           imageUrl = null;
                           videoUrl = null;

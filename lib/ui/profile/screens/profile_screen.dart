@@ -8,6 +8,7 @@ import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
 import 'package:recipe_app/ui/views/recipe/screens/edit_recipe_screen.dart';
+import 'package:video_player/video_player.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -20,11 +21,19 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   User? newUser;
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+    context.read<RecipeBloc>()..add(GetUserRecipes());
   }
 
   @override
@@ -195,6 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Expanded(
                   child: TabBarView(controller: _tabController, children: [
                     BlocBuilder<RecipeBloc, RecipeState>(
+                      bloc: context.read<RecipeBloc>()..add(GetUserRecipes()),
                       builder: (context, state) {
                         if (state is RecipeLoading) {
                           return const Center(
@@ -208,7 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           );
                         }
 
-                        if (state is RecipeLoaded) {
+                        if (state is UserRecipeLoaded) {
                           final recipes = state.recipes;
                           return ListView.separated(
                             itemCount: recipes.length,
@@ -224,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      recipe.imageUrl,
+                                      recipe!.imageUrl,
                                     ),
                                     fit: BoxFit.cover,
                                   ),

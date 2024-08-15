@@ -35,16 +35,16 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   void initState() {
     super.initState();
     selectedCategory = "Nonushta";
-    getUserId();
+    getUserEmail();
   }
 
-  void getUserId()async{
+  void getUserEmail()async{
     final prefs = await SharedPreferences.getInstance();
 
-    final userInfo = jsonDecode( prefs.getString("userInfo")!);
+    final userInfo = jsonDecode( prefs.getString("userData")!);
 
     if(userInfo != null){
-      authorId = userInfo["id"];
+      authorId = userInfo["email"];
     }else{
       print("Foydlanuvchi malumotlari mavjud emas!!!");
     }

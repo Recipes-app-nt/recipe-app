@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:recipe_app/ui/views/home/widgets/shimmers/new_recipe_shimmer.dart';
 
 import '../../../../blocs/recipe/recipe_bloc.dart';
-import '../../../../blocs/recipe/recipe_event.dart';
-import '../../../../blocs/recipe/recipe_state.dart';
+import '../../../../blocs/user/user_bloc.dart';
+import '../../../../data/models/user_model.dart';
 
 class NewRecipe extends StatelessWidget {
   const NewRecipe({super.key});
@@ -21,7 +21,7 @@ class NewRecipe extends StatelessWidget {
             height: 180,
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              itemCount: 5, 
+              itemCount: 5,
               scrollDirection: Axis.horizontal,
               separatorBuilder: (context, index) => const Gap(20.0),
               itemBuilder: (context, index) {
@@ -92,19 +92,54 @@ class NewRecipe extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: Colors.teal,
-                                        ),
-                                        Gap(10.0),
-                                        Text(
-                                          "By James Milner",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
+                                    BlocBuilder<UserBloc, UserStates>(
+                                      builder: (context, state) {
+                                        if (state is LoadingUserState) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+
+                                        if (state is ErrorUserState) {
+                                          return Center(
+                                            child: Text(state.message),
+                                          );
+                                        }
+
+                                        User? user;
+
+                                        if (state is LoadedUserState) {
+                                          user = state.user;
+                                        }
+
+                                        if (user == null) {
+                                          return const Center(
+                                            child: Text("User not found"),
+                                          );
+                                        }
+                                        return Row(
+                                          children: [
+                                            CircleAvatar(
+                                              child: Image.network(
+                                                user.profilePicture,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/emoji.png',
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            const Gap(10.0),
+                                            Text(
+                                              "By ${user.username}",
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                     Text(
                                       "${recipe.cookingTime} mins",
@@ -134,11 +169,9 @@ class NewRecipe extends StatelessWidget {
                           recipe.imageUrl,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              child: Image.network(
-                                "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                                fit: BoxFit.cover,
-                              ),
+                            return Image.network(
+                              "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                              fit: BoxFit.cover,
                             );
                           },
                         ),

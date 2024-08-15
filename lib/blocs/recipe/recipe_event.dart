@@ -1,5 +1,8 @@
-import 'package:equatable/equatable.dart';
-import 'package:recipe_app/data/models/recipe_model.dart';
+// import 'package:equatable/equatable.dart';
+// import 'package:recipe_app/data/models/recipe_model.dart';
+
+part of 'recipe_bloc.dart';
+
 
 abstract class RecipeEvent extends Equatable {
   @override

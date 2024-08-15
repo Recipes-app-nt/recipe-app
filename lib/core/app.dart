@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
+import 'package:recipe_app/blocs/social_functions/social_function_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/repositories/category_repository.dart';
 import 'package:recipe_app/data/repositories/user_repository.dart';
@@ -41,7 +42,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => UserBloc(userRepository: userRepository),
-          )
+          ),
+          BlocProvider.value(
+            value: getIt.get<SocialFunctionsBloc>(),
+          ),
         ],
         child: const ToastificationWrapper(
           child: MaterialApp(

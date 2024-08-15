@@ -43,7 +43,7 @@ class MediaUploadInProgress extends RecipeState {}
 /// Media yuklanib bo'landan so'ng
 class MediaUploadSuccess extends RecipeState {
   final String downloadUrl;
-  String mediaType;
+  final String mediaType;
 
   MediaUploadSuccess(this.downloadUrl, this.mediaType);
 

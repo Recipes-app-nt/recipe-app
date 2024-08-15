@@ -21,13 +21,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }
 
   void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
-    // try {
-    //   final recipes = await repository.getAllRecipes();
-    //   emit(RecipeLoaded(recipes));
-    // } catch (e) {
-    //   emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
-    // }
-
     emit(RecipeLoading());
     try {
       final recipes = await repository.getAllRecipes();

@@ -7,6 +7,8 @@ import 'video_state.dart';
 class VideoBloc extends Bloc<VideoEvent, VideoState> {
   VideoBloc() : super(VideoState([])) {
     on<LoadVideos>(_loadVideos);
+    on<PlayVideo>(_playVideo);
+    on<PauseVideo>(_pauseVideo);
   }
 
   void _loadVideos(LoadVideos event, Emitter<VideoState> emit) async {
@@ -21,9 +23,22 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     emit(VideoState(controllers));
   }
 
+  void _playVideo(PlayVideo event, Emitter<VideoState> emit) {
+    final controller = state.controllers[event.index];
+    controller.play();
+    emit(VideoState(List.from(state.controllers), playingIndex: event.index)); // Update playingIndex
+  }
+
+  void _pauseVideo(PauseVideo event, Emitter<VideoState> emit) {
+    final controller = state.controllers[event.index];
+    controller.pause();
+    emit(VideoState(List.from(state.controllers), playingIndex: null)); // Reset playingIndex
+  }
+
   @override
   Future<void> close() {
     state.controllers.forEach((controller) => controller.dispose());
     return super.close();
   }
 }
+

@@ -14,3 +14,21 @@ class LoadVideos extends VideoEvent {
   @override
   List<Object> get props => [videoUrls];
 }
+
+class PlayVideo extends VideoEvent {
+  final int index;
+
+  PlayVideo(this.index);
+
+  @override
+  List<Object> get props => [index];
+}
+
+class PauseVideo extends VideoEvent {
+  final int index;
+
+  PauseVideo(this.index);
+
+  @override
+  List<Object> get props => [index];
+}

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/social_functions/social_function_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
+import 'package:recipe_app/blocs/video_player/video_bloc.dart';
 import 'package:recipe_app/data/repositories/category_repository.dart';
 import 'package:recipe_app/data/repositories/user_repository.dart';
 import 'package:recipe_app/data/services/user_service.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => NavigationBloc()..add(AppStarted()),
           )
+          BlocProvider(create: (context) => VideoBloc())
         ],
         child: const ToastificationWrapper(
           child: MaterialApp(

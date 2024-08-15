@@ -50,8 +50,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => NavigationBloc()..add(AppStarted()),
+          ),
+          BlocProvider(
+            create: (context) => VideoBloc(),
           )
-          BlocProvider(create: (context) => VideoBloc())
         ],
         child: const ToastificationWrapper(
           child: MaterialApp(

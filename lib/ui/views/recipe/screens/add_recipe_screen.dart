@@ -7,8 +7,11 @@ import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/data/models/category_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 import 'package:recipe_app/data/services/media_picker_service.dart';
+import 'package:recipe_app/hive/services/hive_service.dart';
 import 'package:recipe_app/ui/widgets/custom_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../hive/models/recipe_hive_model.dart';
 
 class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({super.key});
@@ -28,14 +31,37 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   String? imageUrl;
   String? videoUrl;
   late String authorId;
-
+  final RecipeHiveService _recipeHiveService = RecipeHiveService();
   final MediaPickerService _mediaPickerService = MediaPickerService();
 
   @override
   void initState() {
     super.initState();
+    _initHiveService();
     selectedCategory = "Nonushta";
     getUserEmail();
+  }
+
+  Future<void> _initHiveService() async {
+    await _recipeHiveService.init();
+  }
+
+  Future<void> _saveRecipeToHive(Recipe recipe) async {
+    final recipeHiveModel = RecipeHiveModel(
+      id: recipe.id,
+      title: recipe.title,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      cookingTime: recipe.cookingTime,
+      imageUrl: recipe.imageUrl,
+      videoUrl: recipe.videoUrl,
+      category: recipe.category,
+      authorId: recipe.authorId,
+      rating: recipe.rating,
+    );
+
+    await _recipeHiveService.addRecipe(recipeHiveModel);
+    print("==================Manimcha localga saqlandi");
   }
 
   void getUserEmail()async{
@@ -260,7 +286,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           final recipe = Recipe(
                             id: DateTime.now().toString(),
@@ -279,6 +305,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             updatedAt: DateTime.now(),
                             rating: 0.0,
                           );
+                          await _saveRecipeToHive(recipe);
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
                           clearController();
                           imageUrl = null;

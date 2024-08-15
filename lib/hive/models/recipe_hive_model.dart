@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
-part 'recipe_model.g.dart';
+part 'recipe_hive_model.g.dart';
 
-@HiveType(typeId: 0)
-class Recipe extends HiveObject {
+@HiveType(typeId: 0, adapterName: "RecipeAdapter")
+class RecipeHiveModel  {
   @HiveField(0)
   String id;
 
@@ -33,7 +33,7 @@ class Recipe extends HiveObject {
   @HiveField(9)
   double rating;
 
-  Recipe({
+  RecipeHiveModel({
     required this.id,
     required this.title,
     required this.ingredients,

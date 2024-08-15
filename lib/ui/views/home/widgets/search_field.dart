@@ -2,7 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MySearchField extends StatefulWidget {
-  const MySearchField({super.key});
+  final bool isSearch;
+  const MySearchField({
+    super.key,
+    required this.isSearch,
+  });
 
   @override
   State<MySearchField> createState() => _MySearchFieldState();
@@ -26,30 +30,32 @@ class _MySearchFieldState extends State<MySearchField> {
           contentPadding: const EdgeInsets.all(15),
           hintText: 'Search Grocery',
           hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
-          prefixIcon: const Padding(
+          prefixIcon: Padding(
             padding: EdgeInsets.all(12),
             child: Icon(CupertinoIcons.search),
           ),
-          suffixIcon: Container(
-            width: 100,
-            child: const IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  VerticalDivider(
-                    color: Colors.black,
-                    indent: 10,
-                    endIndent: 10,
-                    thickness: 0.1,
+          suffixIcon: widget.isSearch
+              ? const SizedBox(
+                  width: 100,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        VerticalDivider(
+                          color: Colors.black,
+                          indent: 10,
+                          endIndent: 10,
+                          thickness: 0.1,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(CupertinoIcons.increase_indent),
+                        ),
+                      ],
+                    ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(CupertinoIcons.increase_indent),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide.none,

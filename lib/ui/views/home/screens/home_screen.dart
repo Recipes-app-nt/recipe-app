@@ -20,12 +20,12 @@ class HomeScreen extends StatelessWidget {
               ProfileInfoWidget(),
               Padding(
                 padding: EdgeInsets.all(16.0),
-                child: MySearchField(),
+                child: MySearchField(isSearch: true,),
               ),
               Gap(10.0),
               MyCategoriesRow(),
 
-              
+
               StackProductWidget(),
 
               //* Category text style

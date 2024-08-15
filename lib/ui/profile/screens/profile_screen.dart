@@ -30,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
   }
 
   @override
@@ -175,6 +176,140 @@ class _ProfileScreenState extends State<ProfileScreen>
                       lessStyle: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
+                    Tab(
+                      child: Text("Videolar"),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: TabBarView(controller: _tabController, children: [
+                    BlocBuilder<RecipeBloc, RecipeState>(
+                      bloc: context.read<RecipeBloc>()..add(GetUserRecipes()),
+                      builder: (context, state) {
+                        if (state is RecipeLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        if (state is RecipeError) {
+                          return Center(
+                            child: Text(state.message),
+                          );
+                        }
+
+                        if (state is UserRecipeLoaded) {
+                          final recipes = state.recipes;
+                          return ListView.separated(
+                            itemCount: recipes.length,
+                            separatorBuilder: (context, index) =>
+                                const Gap(20.0),
+                            itemBuilder: (context, index) {
+                              final recipe = recipes[index];
+                              return Container(
+                                clipBehavior: Clip.hardEdge,
+                                width: double.infinity,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      recipe!.imageUrl,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  clipBehavior: Clip.hardEdge,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.black.withOpacity(0),
+                                        Colors.black,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          IconButton.filled(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditRecipeScreen(
+                                                    recipe: recipe,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(Icons.edit),
+                                          ),
+                                          IconButton.filled(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      content: Text(
+                                                          "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz?"),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                              "Yo'q"),
+                                                        ),
+                                                        FilledButton(
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    RecipeBloc>()
+                                                                .add(
+                                                                  DeleteRecipe(
+                                                                    recipe.id,
+                                                                  ),
+                                                                );
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text("Ha"),
+                                                        )
+                                                      ],
+                                                    );
+                                                  });
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            recipe.title,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
                   if (user.bio.isEmpty) const Text("No Recorded Bio"),
                   const SizedBox(
                     height: 40,
@@ -254,6 +389,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           image: DecorationImage(
                                             image: NetworkImage(
                                               recipe!.imageUrl != '' ? recipe.imageUrl : "https://i.pinimg.com/originals/33/59/c7/3359c7e5febfed141c99f1a04ad38821.jpg" ,
+
                                             ),
                                             fit: BoxFit.cover,
                                           ),

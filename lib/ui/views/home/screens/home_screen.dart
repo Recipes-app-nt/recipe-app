@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    context.read<RecipeBloc>().add(LoadRecipes(categoryId: "all"));
+    // context.read<RecipeBloc>().add(LoadRecipes());
     super.initState();
   }
 
@@ -53,12 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const Gap(10.0),
               MyCategoriesRow(
                 onCategorySelected: (categoryId) {
-                  setState(() {
-                    selectedCategoryId = categoryId;
-                  });
+                  // setState(() {
+                  //   selectedCategoryId = categoryId;
+                  // });
                 },
               ),
-              StackProductWidget(categoryId: selectedCategoryId),
+              // StackProductWidget(categoryId: selectedCategoryId),
+              StackProductWidget(),
 
               //* Category text style
               const Padding(
@@ -75,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const NewRecipe(),
+              // const NewRecipe(),
             ],
           ),
         ),

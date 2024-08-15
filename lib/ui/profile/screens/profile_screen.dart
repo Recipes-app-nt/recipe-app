@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   tabs: [
                     Tab(
                       child: Text(
-                        "Recipe",
+                        "Retseptlar",
                         style: TextStyle(
                           color: tabController.index == 0
                               ? Colors.white
@@ -185,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
                     Tab(
                       child: Text(
-                        "Videos",
+                        "Videolar",
                         style: TextStyle(
                           color: tabController.index == 1
                               ? Colors.white
@@ -250,8 +250,65 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        children: [
+                                          IconButton.filled(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditRecipeScreen(
+                                                          recipe: recipe),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(Icons.edit),
+                                          ),
+                                          IconButton.filled(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      content: Text(
+                                                          "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz?"),
+                                                      actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: const Text(
+                                                                "Yo'q"),
+                                                          ),
+                                                          FilledButton(
+                                                            onPressed: () {
+                                                              context
+                                                                  .read<
+                                                                      RecipeBloc>()
+                                                                  .add(DeleteRecipe(
+                                                                      recipe
+                                                                          .id));
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Text("Ha"),
+                                                          )
+                                                        ],
+
+                                                    );
+                                                  });
+                                            },
+                                            icon: const Icon(Icons.delete),
+                                          ),
+                                        ],
+                                      ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -283,55 +340,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   color: Color(0xFFD9D9D9),
                                                 ),
                                               ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                EditRecipeScreen(
-                                                                    recipe:
-                                                                        recipe)));
-                                                  },
-                                                  icon: Icon(Icons.edit)),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz? "),
-                                                            content: Row(
-                                                              children: [
-                                                                TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        "Yo'q")),
-                                                                FilledButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .read<
-                                                                              RecipeBloc>()
-                                                                          .add(DeleteRecipe(
-                                                                              recipe.id));
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        "Ha"))
-                                                              ],
-                                                            ),
-                                                          );
-                                                        });
-                                                  },
-                                                  icon: Icon(Icons.delete,
-                                                      color: Colors.red)),
                                             ],
                                           )
                                         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:readmore/readmore.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
@@ -17,16 +18,19 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  late TabController tabController;
+  late TabController _tabController;
   User? newUser;
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      setState(() {});
-    });
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -164,34 +168,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                   height: 40,
                 ),
                 TabBar(
-                  controller: tabController,
-                  indicator: const BoxDecoration(
-                      color: Color(0xFF129575),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      )),
-                  indicatorPadding: const EdgeInsets.symmetric(horizontal: -50),
-                  dividerColor: Colors.transparent,
-                  tabs: [
+                  dividerHeight: 0,
+                  labelStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  indicator: BoxDecoration(
+                    color: const Color(0xff129575),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  indicatorPadding: const EdgeInsets.all(3.0),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  controller: _tabController,
+                  tabs: const [
                     Tab(
-                      child: Text(
-                        "Retseptlar",
-                        style: TextStyle(
-                          color: tabController.index == 0
-                              ? Colors.white
-                              : const Color(0xFF71B1A1),
-                        ),
-                      ),
+                      child: Text("Retseptlar"),
                     ),
                     Tab(
-                      child: Text(
-                        "Videolar",
-                        style: TextStyle(
-                          color: tabController.index == 1
-                              ? Colors.white
-                              : const Color(0xFF71B1A1),
-                        ),
-                      ),
+                      child: Text("Videolar"),
                     )
                   ],
                 ),
@@ -199,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   height: 10,
                 ),
                 Expanded(
-                  child: TabBarView(controller: tabController, children: [
+                  child: TabBarView(controller: _tabController, children: [
                     BlocBuilder<RecipeBloc, RecipeState>(
                       builder: (context, state) {
                         if (state is RecipeLoading) {
@@ -216,13 +210,14 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                         if (state is RecipeLoaded) {
                           final recipes = state.recipes;
-                          return ListView.builder(
+                          return ListView.separated(
                             itemCount: recipes.length,
+                            separatorBuilder: (context, index) =>
+                                const Gap(20.0),
                             itemBuilder: (context, index) {
                               final recipe = recipes[index];
                               return Container(
                                 clipBehavior: Clip.hardEdge,
-                                margin: const EdgeInsets.only(top: 20),
                                 width: double.infinity,
                                 height: 150,
                                 decoration: BoxDecoration(
@@ -255,7 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.end,
+                                            MainAxisAlignment.end,
                                         children: [
                                           IconButton.filled(
                                             onPressed: () {
@@ -279,29 +274,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                       content: Text(
                                                           "Siz ${recipe.title} nomli receptni o'chirishga aminmisiz?"),
                                                       actions: [
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: const Text(
-                                                                "Yo'q"),
-                                                          ),
-                                                          FilledButton(
-                                                            onPressed: () {
-                                                              context
-                                                                  .read<
-                                                                      RecipeBloc>()
-                                                                  .add(DeleteRecipe(
-                                                                      recipe
-                                                                          .id));
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text("Ha"),
-                                                          )
-                                                        ],
-
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                              "Yo'q"),
+                                                        ),
+                                                        FilledButton(
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    RecipeBloc>()
+                                                                .add(DeleteRecipe(
+                                                                    recipe.id));
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text("Ha"),
+                                                        )
+                                                      ],
                                                     );
                                                   });
                                             },

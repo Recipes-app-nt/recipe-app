@@ -1,5 +1,4 @@
 import 'package:recipe_app/data/models/recipe_model.dart';
-
 import '../../core/network/dio_client.dart';
 
 class RecipeService {
@@ -19,7 +18,6 @@ class RecipeService {
       final data = response.data;
       final recipeId = data['name'];
       recipe.id = recipeId;
-
       return Recipe.fromJson(
         data,
         recipeId,

@@ -5,7 +5,7 @@ import 'package:recipe_app/core/app.dart';
 import 'package:recipe_app/data/services/fcm_service.dart';
 import 'package:recipe_app/data/services/get_it.dart';
 import 'package:recipe_app/firebase_options.dart';
-import 'hive/models/recipe_model.dart';
+import 'hive/models/recipe_hive_model.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();

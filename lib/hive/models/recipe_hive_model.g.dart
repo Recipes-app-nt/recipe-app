@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'recipe_model.dart';
+part of 'recipe_hive_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class RecipeAdapter extends TypeAdapter<Recipe> {
+class RecipeAdapter extends TypeAdapter<RecipeHiveModel> {
   @override
   final int typeId = 0;
 
   @override
-  Recipe read(BinaryReader reader) {
+  RecipeHiveModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Recipe(
+    return RecipeHiveModel(
       id: fields[0] as String,
       title: fields[1] as String,
       ingredients: (fields[2] as List).cast<String>(),
@@ -31,7 +31,7 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
   }
 
   @override
-  void write(BinaryWriter writer, Recipe obj) {
+  void write(BinaryWriter writer, RecipeHiveModel obj) {
     writer
       ..writeByte(10)
       ..writeByte(0)

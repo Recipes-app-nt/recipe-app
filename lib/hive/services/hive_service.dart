@@ -1,36 +1,44 @@
 import 'package:hive/hive.dart';
-import 'package:recipe_app/hive/models/recipe_model.dart';
+import 'package:recipe_app/hive/models/recipe_hive_model.dart';
 
 class RecipeHiveService {
-  late Box<Recipe> recipeBox;
+  Box<RecipeHiveModel>? _recipeBox;
 
-  RecipeHiveService() {
-    _init();
+  Future<void> init() async {
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(RecipeAdapter());
+    }
+    _recipeBox = await Hive.openBox<RecipeHiveModel>('recipeBox');
   }
 
-  Future<void> _init() async {
-    Hive.registerAdapter(RecipeAdapter());
-
-    recipeBox = await Hive.openBox<Recipe>('recipeBox');
+  Future<void> addRecipe(RecipeHiveModel recipe) async {
+    await _ensureInitialized();
+    await _recipeBox!.add(recipe);
   }
 
-  Future<void> addRecipe(Recipe recipe) async {
-    await recipeBox.add(recipe);
+  RecipeHiveModel? getRecipe(String id) {
+    _ensureInitialized();
+    return _recipeBox?.get(id);
   }
 
-  Recipe? getRecipe(String id) {
-    return recipeBox.get(id);
-  }
-
-  Future<void> updateRecipe(Recipe recipe) async {
-    await recipeBox.put(recipe.id, recipe);
+  Future<void> updateRecipe(RecipeHiveModel recipe) async {
+    await _ensureInitialized();
+    await _recipeBox!.put(recipe.id, recipe);
   }
 
   Future<void> deleteRecipe(String id) async {
-    await recipeBox.delete(id);
+    await _ensureInitialized();
+    await _recipeBox!.delete(id);
   }
 
-  List<Recipe> getAllRecipes() {
-    return recipeBox.values.toList();
+  List<RecipeHiveModel> getAllRecipes() {
+    _ensureInitialized();
+    return _recipeBox?.values.toList() ?? [];
+  }
+
+  Future<void> _ensureInitialized() async {
+    if (_recipeBox == null) {
+      await init();
+    }
   }
 }

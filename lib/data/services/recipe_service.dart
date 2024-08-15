@@ -1,8 +1,10 @@
 import 'package:recipe_app/data/models/recipe_model.dart';
 import '../../core/network/dio_client.dart';
+import '../../hive/services/hive_service.dart';
 
 class RecipeService {
   final _dioClient = DioClient();
+  final recipeHiveService = RecipeHiveService();
 
   Future<Recipe> addRecipe(Recipe recipe) async {
     try {

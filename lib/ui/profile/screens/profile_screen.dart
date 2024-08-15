@@ -7,7 +7,6 @@ import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/user_model.dart';
 import 'package:recipe_app/ui/profile/screens/edit_profile_screen.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -18,6 +17,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  User? newUser;
 
   @override
   void initState() {
@@ -43,12 +43,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(),
+                      builder: (context) => EditProfileScreen(
+                        imageUrl: newUser?.profilePicture,
+                        username: newUser?.username,
+                        bio: newUser?.bio,
+                      ),
                     ),
                   );
                 },
                 value: "Edit Profile",
-                child: Text('Edit Profile'),
+                child: const Text('Edit Profile'),
               ),
             ],
           ),
@@ -73,6 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
           if (state is LoadedUserState) {
             user = state.user;
+            newUser = user;
           }
 
           if (user == null) {
@@ -90,7 +95,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                   children: [
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage: NetworkImage(user.profilePicture),
+                      backgroundImage: user.profilePicture.isEmpty
+                          ? const NetworkImage(
+                              "https://img.freepik.com/premium-vector/male-chef-logo-illustration_119589-139.jpg?w=2000")
+                          : NetworkImage(user.profilePicture),
                     ),
                     const SizedBox(
                       width: 30,
@@ -135,20 +143,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                 const SizedBox(
                   height: 20,
                 ),
-                ReadMoreText(
-                  user.bio,
-                  style: const TextStyle(
-                    color: Color(0xFF797979),
+                if (user.bio.isNotEmpty)
+                  ReadMoreText(
+                    user.bio,
+                    style: const TextStyle(
+                      color: Color(0xFF797979),
+                    ),
+                    trimMode: TrimMode.Line,
+                    trimLines: 2,
+                    trimCollapsedText: 'Show more',
+                    trimExpandedText: 'Show less',
+                    moreStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                    lessStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  trimMode: TrimMode.Line,
-                  trimLines: 2,
-                  trimCollapsedText: 'Show more',
-                  trimExpandedText: 'Show less',
-                  moreStyle: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold),
-                  lessStyle: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold),
-                ),
+                if (user.bio.isEmpty) const Text("No Recorded Bio"),
                 const SizedBox(
                   height: 40,
                 ),
@@ -216,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 height: 150,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  image:  DecorationImage(
+                                  image: DecorationImage(
                                     image: NetworkImage(
                                       recipe.imageUrl,
                                     ),
@@ -265,7 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                               Text(
+                                              Text(
                                                 "${recipe.cookingTime} min",
                                                 style: const TextStyle(
                                                   fontSize: 12,

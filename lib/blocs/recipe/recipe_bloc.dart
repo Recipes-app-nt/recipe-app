@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
-
 import '../../data/models/recipe_model.dart';
-
 part 'recipe_event.dart';
 part 'recipe_state.dart';
 

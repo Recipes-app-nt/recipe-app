@@ -24,12 +24,12 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
   Future<void> _getUser(GetUserEvent event, Emitter<UserStates> emit) async {
     emit(LoadingUserState());
 
-    final prefs = await SharedPreferences.getInstance();
-
-    final userInfo = jsonDecode(prefs.getString("userInfo")!); //
-
     try {
-      final user = await _userRepository.getUser(userInfo['id']);
+      final prefs = await SharedPreferences.getInstance();
+      final userData = jsonDecode(prefs.getString('userData') ?? "");
+      print(userData['email']);
+
+      final user = await _userRepository.getUser(userData["email"]);
       if (user != null) {
         emit(LoadedUserState(user));
       } else {
@@ -51,7 +51,9 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
         bio: event.bio,
       );
 
-      final updatedUser = await _userRepository.getUser(event.userId);
+      final updatedUser = await _userRepository.getUser(
+        event.userId,
+      );
       emit(LoadedUserState(updatedUser!));
     } catch (e) {
       emit(ErrorUserState(e.toString()));

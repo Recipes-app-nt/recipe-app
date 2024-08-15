@@ -10,8 +10,8 @@ class UserRepository {
   UserRepository({required DioUserService dioUserService})
       : _dioUserService = dioUserService;
 
-  Future<User?> getUser(String id) async {
-    return _dioUserService.getUserById(id);
+  Future<User?> getUser(String email) async {
+    return _dioUserService.getUserById(email, );
   }
 
   Future<void> editUser({

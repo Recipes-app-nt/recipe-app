@@ -119,17 +119,17 @@ class NewRecipe extends StatelessWidget {
                                         }
                                         return Row(
                                           children: [
-                                            CircleAvatar(
-                                              child: Image.network(
-                                                user.profilePicture,
-                                                errorBuilder: (context, error,
-                                                    stackTrace) {
-                                                  return Image.asset(
-                                                    'assets/images/emoji.png',
-                                                  );
-                                                },
-                                              ),
-                                            ),
+                                            const CircleAvatar(
+                                                // child: Image.network(
+                                                //   user.profilePicture,
+                                                //   errorBuilder: (context, error,
+                                                //       stackTrace) {
+                                                //     return Image.asset(
+                                                //       'assets/images/emoji.png',
+                                                //     );
+                                                //   },
+                                                // ),
+                                                ),
                                             const Gap(10.0),
                                             Text(
                                               "By ${user.username}",

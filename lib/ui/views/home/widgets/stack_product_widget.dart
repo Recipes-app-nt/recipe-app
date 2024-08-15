@@ -7,7 +7,6 @@ import 'package:recipe_app/ui/widgets/favorite_button.dart';
 
 import '../../../../blocs/recipe/recipe_bloc.dart';
 
-
 class StackProductWidget extends StatelessWidget {
   const StackProductWidget({super.key});
 
@@ -42,12 +41,14 @@ class StackProductWidget extends StatelessWidget {
               separatorBuilder: (context, index) => const Gap(20.0),
               itemBuilder: (context, index) {
                 final recipe = state.recipes[index];
-                return InkWell(
+                return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => DetailsScreen(),
+                        builder: (_) => DetailsScreen(
+                          recipe: recipe,
+                        ),
                       ),
                     );
                   },

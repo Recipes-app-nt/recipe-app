@@ -1,15 +1,17 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
+  String apiKey = 'AIzaSyBUQzviZANpeTc2dtACHPdDlPtVxX1NJF4';
   final dio = Dio();
   Future<User> _authenticate(
       String email, String password, String query) async {
     try {
       final response = await dio.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:$query?key=AIzaSyBUQzviZANpeTc2dtACHPdDlPtVxX1NJF4",
+        "https://identitytoolkit.googleapis.com/v1/accounts:$query?key=$apiKey",
         data: {
           "email": email,
           "password": password,
@@ -47,6 +49,18 @@ class AuthService {
     await sharedPreferences.remove('userData');
   }
 
+  Future<void> resetPassword(String email) async {
+    final response = await dio.post(
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=$apiKey",
+      data: {
+        "requestType": "PASSWORD_RESET",
+        "email": email,
+      },
+    );
+    print(response.data);
+    // response.data;
+  }
+
   Future<User?> checkTokenExpiry() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final userData = sharedPreferences.getString("userData");
@@ -78,12 +92,13 @@ class AuthService {
   Future<void> _saveUserData(User user) async {
     final sharedPreferences = await SharedPreferences.getInstance();
 
-    print(user.expiresIn);
     sharedPreferences.setString(
       'userData',
       jsonEncode(
         user.toMap(),
       ),
     );
+    final data = jsonDecode(sharedPreferences.getString("userData")!);
+    print(sharedPreferences.getString('userData'));
   }
 }

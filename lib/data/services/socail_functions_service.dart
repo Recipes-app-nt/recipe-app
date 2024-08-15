@@ -90,6 +90,8 @@ class SocailFunctionsService {
         url: '/users/$userId.json',
       );
 
+      print(response);
+
       if (response.data == null) {
         throw Exception('User not found');
       }
@@ -169,15 +171,16 @@ class SocailFunctionsService {
 //   SocailFunctionsService recipeService = SocailFunctionsService();
 //   try {
 //     // await recipeService.addComment(
-//     //   "-O4GbfFDcTmIYR6D4bAB",
+//     //   "-O4JbQ8N3P02dRa6yitU",
 //     //   Comment(
-//     //     userId: "-O4GmgBLFYb545_nuSmp",
-//     //     text: "Salom test comment",
+//     //     userId: "-O4JPYVX75rFxwiyar26",
+//     //     text: "Comment qo'shish kerak",
 //     //     timestamp: DateTime.now(),
 //     //   ),
 //     // );
+//     await recipeService.addLike("-O4JbQ8N3P02dRa6yitU", "-O4JPYVX75rFxwiyar26");
 //     // await recipeService.addFavorite("-O4GbfFDcTmIYR6D4bAB", '-O4H67gKcKWL151iNuDy');
-//   //  await recipeService.removeFavorite("-O4GbfFDcTmIYR6D4bAB", "-O4H67gKcKWL151iNuDy");
+//     //  await recipeService.removeFavorite("-O4GbfFDcTmIYR6D4bAB", "-O4H67gKcKWL151iNuDy");
 //     print('Update successful');
 //   } catch (e) {
 //     print('Main function error: $e');

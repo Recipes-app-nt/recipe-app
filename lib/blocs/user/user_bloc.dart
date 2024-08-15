@@ -1,37 +1,9 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:recipe_app/data/repositories/user_repository.dart';
-
-// import '../../data/models/user_model.dart';
-
-// part 'user_event.dart';
-
-// part 'user_states.dart';
-
-// class UserBloc extends Bloc<UserEvent, UserStates> {
-//   final UserRepository _userRepository;
-
-//   UserBloc({required UserRepository userRepository})
-//       : _userRepository = userRepository,
-//         super(InitialUserState()) {
-//     on<GetUserEvent>(_getUser);
-//   }
-
-//   void _getUser(GetUserEvent event, Emitter<UserStates> emit) async {
-//     emit(LoadingUserState());
-
-//     try {
-//       final user = await _userRepository.getUser("-O4Hr7UWzyIbfWNfdmA6");
-//       emit(LoadedUserState(user));
-//     } catch (e) {
-//       emit(ErrorUserState(e.toString()));
-//     }
-//   }
-// }
-
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:recipe_app/data/repositories/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/models/user_model.dart';
 
@@ -53,7 +25,10 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
     emit(LoadingUserState());
 
     try {
-      final user = await _userRepository.getUser("-O4Hr7UWzyIbfWNfdmA6");
+      final prefs = await SharedPreferences.getInstance();
+      final userData = jsonDecode(prefs.getString('userData') ?? "");
+
+      final user = await _userRepository.getUser(userData["email"]);
       if (user != null) {
         emit(LoadedUserState(user));
       } else {
@@ -68,16 +43,22 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
     emit(LoadingUserState());
 
     try {
+      print("---------------------------------------------------------------");
       await _userRepository.editUser(
-        userId: event.userId,
+        email: event.email,
         username: event.username,
         profilePicture: event.profilePicture,
         bio: event.bio,
       );
+      print("keldid ----------------------------------------");
 
-      final updatedUser = await _userRepository.getUser(event.userId);
+      final updatedUser = await _userRepository.getUser(
+        event.email,
+      );
+      print(updatedUser);
       emit(LoadedUserState(updatedUser!));
     } catch (e) {
+      print(e);
       emit(ErrorUserState(e.toString()));
     }
   }
@@ -99,8 +80,11 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
       try {
         await _userRepository.updateUserFavorites(
             currentUser.id, updatedFavorites);
-        emit(LoadedUserState(
-            currentUser.copyWith(favoriteDishes: updatedFavorites),),);
+        emit(
+          LoadedUserState(
+            currentUser.copyWith(favoriteDishes: updatedFavorites),
+          ),
+        );
       } catch (e) {
         emit(ErrorUserState(e.toString()));
       }

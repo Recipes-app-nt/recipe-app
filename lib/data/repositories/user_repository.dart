@@ -4,35 +4,33 @@ import 'package:recipe_app/data/services/user_service.dart';
 
 import '../models/user_model.dart';
 
-
-
-
 class UserRepository {
   final DioUserService _dioUserService;
 
   UserRepository({required DioUserService dioUserService})
       : _dioUserService = dioUserService;
 
-  Future<User?> getUser(String id) async {
-    return _dioUserService.getUserById(id);
+  Future<User?> getUser(String email) async {
+    return _dioUserService.getUserById(email, );
   }
 
   Future<void> editUser({
-    required String userId,
+    required String email,
     String? username,
     File? profilePicture,
     String? bio,
   }) async {
     await _dioUserService.editUser(
-      userId: userId,
+      email: email,
       username: username,
       profilePicture: profilePicture,
       bio: bio,
     );
-    
   }
-  Future<void> addUser(String userName, String email, String? fcmToken) async {
-    await _dioUserService.addUser(userName, email, fcmToken);
+
+  Future<void> addUser(
+      String userName, String email, String? fcmToken, String uuid) async {
+    await _dioUserService.addUser(userName, email, fcmToken, uuid);
   }
 
   Future<void> updateUserFavorites(

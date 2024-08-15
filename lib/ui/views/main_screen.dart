@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> screens = [
     const HomeScreen(),
     const SavedRecipesScreen(),
-    // const AddRecipeScreen(),
+    const AddRecipeScreen(),
     const NotificationsScreen(),
     const ProfileScreen(),
   ];
@@ -39,7 +39,11 @@ class _MainScreenState extends State<MainScreen> {
           // setState(() {});
           // currentTab = 4;
           Navigator.push(
-              context, MaterialPageRoute(builder: (_) => AddRecipeScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddRecipeScreen(),
+            ),
+          );
         },
         child: const Icon(
           Icons.add,

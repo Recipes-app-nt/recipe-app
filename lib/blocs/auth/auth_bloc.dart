@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -17,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignIn>(_onSignIn);
     on<AuthLogout>(_onLogout);
     on<CheckTokenExpiry>(_onCheckTokenExpiry);
+    on<AuthResetPassword>(_onResetPassword);
   }
 
   Future<void> _onRegister(AuthRegister event, Emitter<AuthState> emit) async {
@@ -24,11 +27,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await authService.register(event.email, event.password);
       final token = await _fcmService.getToken();
-      _dioUserService.addUser(event.username, event.email, token);
-
+      _dioUserService.addUser(
+        event.username,
+        event.email,
+        token,
+        user.localId,
+      );
       emit(AuthAuthenticated(user));
     } on DioException catch (e) {
       emit(AuthError(e.response?.data["error"]['message']));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onResetPassword(
+      AuthResetPassword event, Emitter<AuthState> emit) async {
+    try {
+      await authService.resetPassword(event.email);
     } catch (e) {
       emit(AuthError(e.toString()));
     }

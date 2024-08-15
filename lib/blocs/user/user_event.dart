@@ -11,13 +11,13 @@ sealed class UserEvent {}
 final class GetUserEvent extends UserEvent {}
 
 final class EditUserEvent extends UserEvent {
-  final String userId;
+  final String email;
   final String? username;
   final File? profilePicture;
   final String? bio;
 
   EditUserEvent({
-    required this.userId,
+    required this.email,
     this.username,
     this.profilePicture,
     this.bio,

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
 
 import '../../data/models/recipe_model.dart';
@@ -16,6 +17,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<UpdateRecipe>(_onUpdateRecipe);
     on<DeleteRecipe>(_onDeleteRecipe);
     on<UploadMedia>(_onUploadMedia);
+    on<GetUserRecipes>(_getUserRecipes);
   }
 
   void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
@@ -37,6 +39,16 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       emit(RecipeLoaded(filteredRecipes));
     } catch (e) {
       emit(RecipeError(e.toString()));
+    }
+  }
+
+  void _getUserRecipes(GetUserRecipes event, Emitter<RecipeState> emit) async {
+    emit(RecipeLoading());
+    try {
+      final recipes = await repository.getUserRecipes();
+      emit(UserRecipeLoaded(recipes));
+    } catch (e) {
+      emit(RecipeError("User retsept malumotlarni olishda xatolik mavjud! $e"));
     }
   }
 

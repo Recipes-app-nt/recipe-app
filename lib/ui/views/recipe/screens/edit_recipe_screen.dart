@@ -1,58 +1,49 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/data/models/category_model.dart';
-import 'package:recipe_app/data/models/comment_model.dart';
-import 'package:recipe_app/data/models/like_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 import 'package:recipe_app/data/services/media_picker_service.dart';
-import 'package:recipe_app/ui/views/recipe/screens/edit_recipe_screen.dart';
 import 'package:recipe_app/ui/widgets/custom_textfield.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class AddRecipeScreen extends StatefulWidget {
-  const AddRecipeScreen({super.key});
+class EditRecipeScreen extends StatefulWidget {
+  final Recipe recipe;
+
+  const EditRecipeScreen({super.key, required this.recipe});
 
   @override
-  State<AddRecipeScreen> createState() => _AddRecipeScreenState();
+  State<EditRecipeScreen> createState() => _EditRecipeScreenState();
 }
 
-class _AddRecipeScreenState extends State<AddRecipeScreen> {
-  final TextEditingController recipeNameController = TextEditingController();
-  final TextEditingController ingredientsController = TextEditingController();
-  final TextEditingController instructionsController = TextEditingController();
-  final TextEditingController cookingTimeController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
+class _EditRecipeScreenState extends State<EditRecipeScreen> {
+  late TextEditingController recipeNameController;
+  late TextEditingController ingredientsController;
+  late TextEditingController instructionsController;
+  late TextEditingController cookingTimeController;
+  late TextEditingController categoryController;
   String? selectedCategory;
   final _formKey = GlobalKey<FormState>();
   String? imageUrl;
   String? videoUrl;
-  late String authorId;
 
   final MediaPickerService _mediaPickerService = MediaPickerService();
 
   @override
   void initState() {
     super.initState();
-    selectedCategory = "Nonushta";
-    getUserId();
-  }
 
-  void getUserId()async{
-    final prefs = await SharedPreferences.getInstance();
-
-    final userInfo = jsonDecode( prefs.getString("userInfo")!);
-
-    if(userInfo != null){
-      authorId = userInfo["id"];
-    }else{
-      print("Foydlanuvchi malumotlari mavjud emas!!!");
-    }
-
-
+    recipeNameController = TextEditingController(text: widget.recipe.title);
+    ingredientsController =
+        TextEditingController(text: widget.recipe.ingredients.join(","));
+    instructionsController =
+        TextEditingController(text: widget.recipe.instructions.join(","));
+    cookingTimeController =
+        TextEditingController(text: widget.recipe.cookingTime);
+    categoryController = TextEditingController(text: widget.recipe.category);
+    selectedCategory = widget.recipe.category;
+    imageUrl = widget.recipe.imageUrl;
+    videoUrl = widget.recipe.videoUrl;
   }
 
   void clearController() {
@@ -79,7 +70,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Mediani tanlang"),
-          content: const Text("Rasm yuklaysizmi yoki Video. Tanlng!!!"),
+          content: const Text("Rasm yuklaysizmi yoki Video. Tanlang!"),
           actions: [
             TextButton(
               onPressed: () {
@@ -103,7 +94,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Recept qo'shish"),
+        title: const Text("Recept tahrirlash"),
         centerTitle: true,
       ),
       body: BlocBuilder<RecipeBloc, RecipeState>(
@@ -135,8 +126,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               );
             });
           } else if (state is MediaUploadFailure) {
-            return  Center(
-                child: Text(state.message),);
+            return const Center(
+                child: Text("Media yuklashda xatolik yuz berdi!"));
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -180,7 +171,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       labelText: "Nomi",
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Iltimos recept nomini kiriting!!!";
+                          return "Iltimos recept nomini kiriting!";
                         }
                         return null;
                       },
@@ -188,10 +179,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     const SizedBox(height: 20),
                     CustomTextFormField(
                       controller: ingredientsController,
-                      labelText: 'Masalliqlar ( , bilan)',
+                      labelText: 'Masalliqlar (, bilan)',
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Iltimos masalliqlarni kiriting!!!";
+                          return "Iltimos masalliqlarni kiriting!";
                         }
                         return null;
                       },
@@ -199,10 +190,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     const SizedBox(height: 20),
                     CustomTextFormField(
                       controller: instructionsController,
-                      labelText: "Jarayon(,bilan)",
+                      labelText: "Jarayon (, bilan)",
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Iltimos jarayonlarni kiriting!!!";
+                          return "Iltimos jarayonlarni kiriting!";
                         }
                         return null;
                       },
@@ -210,14 +201,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     const SizedBox(height: 20),
                     CustomTextFormField(
                       controller: cookingTimeController,
-                      labelText: "Vaqti(min)",
+                      labelText: "Vaqti",
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Iltimos vaqtini kiriting!!!";
+                          return "Iltimos vaqtini kiriting!";
                         }
                         return null;
                       },
-                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 20),
                     BlocBuilder<CategoryBloc, CategoryState>(
@@ -249,6 +239,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             border: OutlineInputBorder(),
                           ),
                           items: categoryItems,
+                          value: state.category!.firstWhere((category) =>
+                              category.categoryId == selectedCategory),
                           onChanged: (CategoriesModel? value) {
                             setState(() {
                               selectedCategory = value!.categoryId;
@@ -265,8 +257,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          final recipe = Recipe(
-                            id: DateTime.now().toString(),
+                          final updatedRecipe = Recipe(
+                            id: widget.recipe.id,
                             title: recipeNameController.text,
                             ingredients: ingredientsController.text.split(","),
                             instructions:
@@ -275,25 +267,27 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             imageUrl: imageUrl ?? "",
                             videoUrl: videoUrl ?? "",
                             category: selectedCategory.toString(),
-                            authorId: authorId ?? "",
-                            likes: [],
-                            comments: [],
-                            createdAt: DateTime.now(),
+                            authorId: widget.recipe.authorId,
+                            likes: widget.recipe.likes,
+                            comments: widget.recipe.comments,
+                            createdAt: widget.recipe.createdAt,
                             updatedAt: DateTime.now(),
                             rating: 0.0,
                           );
 
-                          context.read<RecipeBloc>().add(AddRecipe(recipe));
+                          context.read<RecipeBloc>().add(
+                              UpdateRecipe(updatedRecipe, widget.recipe.id));
                           clearController();
                           imageUrl = null;
                           videoUrl = null;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Ma'lumotlar saqlandi!!!"),
+                              content: Text("Ma'lumotlar tahrirlandi!"),
                               backgroundColor: Colors.green,
                               duration: Duration(seconds: 2),
                             ),
                           );
+                          print(updatedRecipe.title);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -304,12 +298,11 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         ),
                       ),
                       child: const Text(
-                        "Qo'shish",
+                        "Tahrirlash",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/auth/auth_bloc.dart';
-import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/data/services/get_it.dart';
-import 'package:recipe_app/ui/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/views/authentication/screens/login_screen.dart';
 import 'package:recipe_app/ui/views/main_screen.dart';
 import 'package:toastification/toastification.dart';
+import '../../../../blocs/user/user_bloc.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,7 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _startAnimation();
     _loadNextPage();
-    context.read<CategoryBloc>().add(GetCategory());
+    // context.read<CategoryBloc>().add(GetCategory());
+      context.read<UserBloc>().add(GetUserEvent());
+    
   }
 
   void _loadNextPage() {

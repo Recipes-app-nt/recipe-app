@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
+import 'package:recipe_app/blocs/social_functions/social_function_bloc.dart';
 import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/repositories/category_repository.dart';
 import 'package:recipe_app/data/repositories/user_repository.dart';
 import 'package:recipe_app/data/services/user_service.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
 import 'package:recipe_app/ui/views/authentication/screens/splash_screen.dart';
-import 'package:recipe_app/ui/views/main_screen.dart';
 import 'package:toastification/toastification.dart';
 
 import '../blocs/auth/auth_bloc.dart';
@@ -42,7 +42,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => UserBloc(userRepository: userRepository),
-          )
+          ),
+          BlocProvider.value(
+            value: getIt.get<SocialFunctionsBloc>(),
+          ),
         ],
         child: const ToastificationWrapper(
           child: MaterialApp(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:recipe_app/ui/home/screens/home_screen.dart';
+import 'package:recipe_app/ui/views/home/screens/home_screen.dart';
 import 'package:recipe_app/ui/profile/screens/profile_screen.dart';
 import 'package:recipe_app/ui/views/notifications_screen.dart';
 import 'package:recipe_app/ui/views/recipe/screens/add_recipe_screen.dart';
@@ -35,9 +35,15 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: const Color(0xFF129575),
         shape: const CircleBorder(),
         onPressed: () {
-          currentScreen = screens[2];
-          setState(() {});
-          currentTab = 4;
+          // currentScreen = screens[2];
+          // setState(() {});
+          // currentTab = 4;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddRecipeScreen(),
+            ),
+          );
         },
         child: const Icon(
           Icons.add,
@@ -108,9 +114,11 @@ class _MainScreenState extends State<MainScreen> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: SvgPicture.asset(currentTab == 2
-                          ? "assets/icons/notification-active.svg"
-                          : "assets/icons/notification.svg"),
+                      child: SvgPicture.asset(
+                        currentTab == 2
+                            ? "assets/icons/notification-active.svg"
+                            : "assets/icons/notification.svg",
+                      ),
                     ),
                   ),
                   MaterialButton(

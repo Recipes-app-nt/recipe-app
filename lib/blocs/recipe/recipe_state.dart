@@ -1,5 +1,7 @@
-import 'package:equatable/equatable.dart';
-import 'package:recipe_app/data/models/recipe_model.dart';
+// import 'package:equatable/equatable.dart';
+// import 'package:recipe_app/data/models/recipe_model.dart';
+
+part of 'recipe_bloc.dart';
 
 abstract class RecipeState extends Equatable {
   @override
@@ -32,8 +34,9 @@ class MediaUploadInProgress extends RecipeState {}
 /// Media yuklanib bo'landan so'ng
 class MediaUploadSuccess extends RecipeState {
   final String downloadUrl;
+  String mediaType;
 
-  MediaUploadSuccess(this.downloadUrl);
+  MediaUploadSuccess(this.downloadUrl, this.mediaType);
 
   @override
   List<Object> get props => [downloadUrl];

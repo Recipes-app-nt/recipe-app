@@ -71,7 +71,6 @@
 //   }
 // }
 
-
 import 'comment_model.dart';
 
 class Recipe {
@@ -88,22 +87,23 @@ class Recipe {
   final List<Comment> comments;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final double rating;
 
-  Recipe({
-    required this.id,
-    required this.title,
-    required this.ingredients,
-    required this.instructions,
-    required this.cookingTime,
-    required this.imageUrl,
-    required this.videoUrl,
-    required this.category,
-    required this.authorId,
-    required this.likes,
-    required this.comments,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+  Recipe(
+      {required this.id,
+      required this.title,
+      required this.ingredients,
+      required this.instructions,
+      required this.cookingTime,
+      required this.imageUrl,
+      required this.videoUrl,
+      required this.category,
+      required this.authorId,
+      required this.likes,
+      required this.comments,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.rating});
 
   factory Recipe.fromJson(Map<String, dynamic> json, String id) {
     return Recipe(
@@ -116,14 +116,19 @@ class Recipe {
       videoUrl: json['video_url'] ?? '',
       category: json['category'] ?? '',
       authorId: json['author_id'] ?? '',
-      likes: List<String>.from(json['likes'] ?? []), // Updated to List<String>
+      likes: List<String>.from(json['likes'] ?? []),
       comments: (json['comments'] as List<dynamic>? ?? [])
-          .map((item) => Comment.fromJson(item as Map<String, dynamic>))
-          .toList(), // Updated to handle List<Comment>
-      createdAt:
-          DateTime.parse(json['created_at'] ?? DateTime.now().toString()),
-      updatedAt:
-          DateTime.parse(json['updated_at'] ?? DateTime.now().toString()),
+          .map(
+            (item) => Comment.fromJson(item as Map<String, dynamic>),
+          )
+          .toList(),
+      createdAt: DateTime.parse(
+        json['created_at'] ?? DateTime.now().toString(),
+      ),
+      updatedAt: DateTime.parse(
+        json['updated_at'] ?? DateTime.now().toString(),
+      ),
+      rating: json['rating'] ?? 0.0,
     );
   }
 
@@ -137,12 +142,15 @@ class Recipe {
       'video_url': videoUrl,
       'category': category,
       'author_id': authorId,
-      'likes': likes, // Updated to List<String>
+      'likes': likes,
       'comments': comments
-          .map((comment) => comment.toJson())
-          .toList(), // Updated to handle List<Comment>
+          .map(
+            (comment) => comment.toJson(),
+          )
+          .toList(),
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
+      'rating': rating,
     };
   }
 }

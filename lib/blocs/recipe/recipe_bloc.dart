@@ -1,7 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_app/blocs/recipe/recipe_event.dart';
-import 'package:recipe_app/blocs/recipe/recipe_state.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
+
+import '../../data/models/recipe_model.dart';
+
+part 'recipe_event.dart';
+part 'recipe_state.dart';
 
 class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final RecipeRepository repository;
@@ -24,8 +28,9 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }
 
   void _onAddRecipe(AddRecipe event, Emitter<RecipeState> emit) async {
+    emit(RecipeLoading());
     try {
-      final res = await repository.addRecipe(event.recipe);
+      await repository.addRecipe(event.recipe);
       add(LoadRecipes());
     } catch (e) {
       emit(RecipeError("Malumotni qo'shishda xatolik mavjud $e"));
@@ -54,10 +59,10 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     emit(MediaUploadInProgress());
 
     try {
-      final mediaLink = await repository.uploadMedia(event.path);
+      final mediaLink = await repository.uploadMedia(event.path, event.mediaType);
 
       if (mediaLink != null) {
-        emit(MediaUploadSuccess(mediaLink));
+        emit(MediaUploadSuccess(mediaLink, event.mediaType));
       } else {
         emit(MediaUploadFailure("Yuklashda xatolik"));
       }

@@ -6,8 +6,6 @@ import '../models/comment_model.dart';
 class SocailFunctionsService {
   final _dioClient = DioClient();
 
-
-
   Future<void> addComment(String recipeId, Comment comment) async {
     try {
       final response = await _dioClient.get(
@@ -85,20 +83,103 @@ class SocailFunctionsService {
       rethrow;
     }
   }
+
+  Future<void> addFavorite(String recipeId, String userId) async {
+    try {
+      final response = await _dioClient.get(
+        url: '/users/$userId.json',
+      );
+
+      print(response);
+
+      if (response.data == null) {
+        throw Exception('User not found');
+      }
+
+      final favorites = response.data['favoriteDishes'];
+      List<String> updateFavorites = [];
+
+      if (favorites is List) {
+        updateFavorites = List<String>.from(favorites);
+      }
+
+      if (!updateFavorites.contains(recipeId)) {
+        updateFavorites.add(recipeId);
+      }
+
+      final updateResponse = await _dioClient.update(
+        url: '/users/$userId.json',
+        data: {'favoriteDishes': updateFavorites},
+      );
+
+      if (updateResponse.statusCode != 200 &&
+          updateResponse.statusCode != 201) {
+        throw Exception('Failed to update favoriteDishes');
+      }
+
+      print('Recipe added to favorites successfully');
+    } on DioException catch (e) {
+      print('Error adding favorite: ${e.response?.data}');
+      rethrow;
+    } catch (e) {
+      print('Error adding favorite: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> removeFavorite(String recipeId, String userId) async {
+    try {
+      final response = await _dioClient.get(
+        url: '/users/$userId.json',
+      );
+
+      if (response.data == null) {
+        throw Exception('User not found');
+      }
+
+      final favorites = response.data['favoriteDishes'];
+      List<String> updateFavorites = [];
+
+      if (favorites is List) {
+        updateFavorites = List<String>.from(favorites);
+      }
+
+      updateFavorites.remove(recipeId);
+
+      final updateResponse = await _dioClient.update(
+        url: '/users/$userId.json',
+        data: {'favoriteDishes': updateFavorites},
+      );
+
+      if (updateResponse.statusCode != 200 &&
+          updateResponse.statusCode != 201) {
+        throw Exception('Failed to update favoriteDishes');
+      }
+
+      print('Recipe removed from favorites successfully');
+    } on DioException catch (e) {
+      print('Error removing favorite: ${e.response?.data}');
+      rethrow;
+    } catch (e) {
+      print('Error removing favorite: $e');
+      rethrow;
+    }
+  }
 }
 
 // void main(List<String> args) async {
 //   SocailFunctionsService recipeService = SocailFunctionsService();
 //   try {
 //     // await recipeService.addComment(
-//     //   "-O4AwUHRWqLTiCn49gvO",
+//     //   "-O4GbfFDcTmIYR6D4bAB",
 //     //   Comment(
-//     //     userId: "sdfghgj",
-//     //     text: "Test comment",
+//     //     userId: "-O4GmgBLFYb545_nuSmp",
+//     //     text: "Salom test comment",
 //     //     timestamp: DateTime.now(),
 //     //   ),
 //     // );
-//     await recipeService.addLike("-O4AwUHRWqLTiCn49gvO", 'a');
+//     // await recipeService.addFavorite("-O4GbfFDcTmIYR6D4bAB", '-O4H67gKcKWL151iNuDy');
+//   //  await recipeService.removeFavorite("-O4GbfFDcTmIYR6D4bAB", "-O4H67gKcKWL151iNuDy");
 //     print('Update successful');
 //   } catch (e) {
 //     print('Main function error: $e');

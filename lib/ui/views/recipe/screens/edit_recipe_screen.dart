@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
-import 'package:recipe_app/blocs/recipe/recipe_event.dart';
-import 'package:recipe_app/blocs/recipe/recipe_state.dart';
 import 'package:recipe_app/data/models/category_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 import 'package:recipe_app/data/services/media_picker_service.dart';
@@ -36,9 +34,12 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
     super.initState();
 
     recipeNameController = TextEditingController(text: widget.recipe.title);
-    ingredientsController = TextEditingController(text: widget.recipe.ingredients.join(","));
-    instructionsController = TextEditingController(text: widget.recipe.instructions.join(","));
-    cookingTimeController = TextEditingController(text: widget.recipe.cookingTime);
+    ingredientsController =
+        TextEditingController(text: widget.recipe.ingredients.join(","));
+    instructionsController =
+        TextEditingController(text: widget.recipe.instructions.join(","));
+    cookingTimeController =
+        TextEditingController(text: widget.recipe.cookingTime);
     categoryController = TextEditingController(text: widget.recipe.category);
     selectedCategory = widget.recipe.category;
     imageUrl = widget.recipe.imageUrl;
@@ -149,15 +150,20 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           ),
                           child: imageUrl == null && videoUrl == null
                               ? const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.upload, size: 50),
-                                Text("Rasm yoki Video yuklash"),
-                              ],
-                            ),
-                          ) : const Center(child: Icon(Icons.check,size: 60, color: Colors.green,))
-                      ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.upload, size: 50),
+                                      Text("Rasm yoki Video yuklash"),
+                                    ],
+                                  ),
+                                )
+                              : const Center(
+                                  child: Icon(
+                                  Icons.check,
+                                  size: 60,
+                                  color: Colors.green,
+                                ))),
                     ),
                     const SizedBox(height: 20),
                     CustomTextFormField(
@@ -204,7 +210,6 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                       },
                     ),
                     const SizedBox(height: 20),
-
                     BlocBuilder<CategoryBloc, CategoryState>(
                       builder: (context, state) {
                         if (state.isLoading) {
@@ -234,14 +239,12 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             border: OutlineInputBorder(),
                           ),
                           items: categoryItems,
-                          value: state.category!.firstWhere(
-                                  (category) => category.categoryId == selectedCategory),
+                          value: state.category!.firstWhere((category) =>
+                              category.categoryId == selectedCategory),
                           onChanged: (CategoriesModel? value) {
-
                             setState(() {
                               selectedCategory = value!.categoryId;
-                              categoryController.text = value
-                                  .name;
+                              categoryController.text = value.name;
                             });
                           },
                           validator: (value) => value == null
@@ -259,7 +262,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             title: recipeNameController.text,
                             ingredients: ingredientsController.text.split(","),
                             instructions:
-                            instructionsController.text.split(","),
+                                instructionsController.text.split(","),
                             cookingTime: cookingTimeController.text,
                             imageUrl: imageUrl ?? "",
                             videoUrl: videoUrl ?? "",
@@ -269,23 +272,23 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             comments: widget.recipe.comments,
                             createdAt: widget.recipe.createdAt,
                             updatedAt: DateTime.now(),
+                            rating: 0.0,
                           );
 
-                          context.read<RecipeBloc>().add(UpdateRecipe(updatedRecipe, widget.recipe.id));
+                          context.read<RecipeBloc>().add(
+                              UpdateRecipe(updatedRecipe, widget.recipe.id));
                           clearController();
                           imageUrl = null;
                           videoUrl = null;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(
-                                  "Ma'lumotlar tahrirlandi!"),
+                              content: Text("Ma'lumotlar tahrirlandi!"),
                               backgroundColor: Colors.green,
                               duration: Duration(seconds: 2),
                             ),
                           );
                           print(updatedRecipe.title);
                         }
-
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff129575),

@@ -76,7 +76,7 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
       );
 
       final updatedUser = await _userRepository.getUser(event.userId);
-      emit(LoadedUserState(updatedUser));
+      emit(LoadedUserState(updatedUser!));
     } catch (e) {
       emit(ErrorUserState(e.toString()));
     }
@@ -99,7 +99,6 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
       try {
         await _userRepository.updateUserFavorites(
             currentUser.id, updatedFavorites);
-        // Updating the state with the updated user data
         emit(LoadedUserState(
             currentUser.copyWith(favoriteDishes: updatedFavorites),),);
       } catch (e) {

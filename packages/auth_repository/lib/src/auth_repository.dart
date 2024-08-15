@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   String apiKey = 'AIzaSyBUQzviZANpeTc2dtACHPdDlPtVxX1NJF4';
-  final dio = Dio();
+  Dio dio = Dio();
   Future<User> _authenticate(
       String email, String password, String query) async {
     try {
@@ -57,8 +57,6 @@ class AuthService {
         "email": email,
       },
     );
-    print(response.data);
-    // response.data;
   }
 
   Future<User?> checkTokenExpiry() async {

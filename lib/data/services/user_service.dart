@@ -1,3 +1,70 @@
+/* import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:recipe_app/core/network/dio_client.dart';
+import 'package:recipe_app/data/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class DioUserService {
+  final _dio = DioClient();
+
+  Future<User?> getUserById(String userId) async {
+    try {
+      final response = await _dio.get(
+        url: 'users/$userId.json',
+      );
+
+      print(response.data);
+
+      final prefs = await SharedPreferences.getInstance();
+
+      final userInfo = jsonDecode(prefs.getString("userInfo")!);
+
+      print(userInfo['id']);
+
+      if (response.data != null) {
+        return User.fromJson(response.data, userInfo['id']);
+      }
+      return null;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> addUser(String userName, String email, String? fcmToken) async {
+    try {
+      final response = await _dio.add(
+        url: "users.json",
+        data: {
+          "username": userName,
+          "email": email,
+          "favoriteDishes": [],
+          "fcmToken": fcmToken,
+        },
+      );
+
+      final data = response.data;
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        'userInfo',
+        jsonEncode({
+          "email": email,
+          "username": userName,
+          "favoriteDishes": [],
+          'id': data["name"],
+        }),
+      );
+
+      print(prefs.getString('userInfo'));
+    } catch (e) {
+      rethrow;
+    }
+  }
+} */
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -22,7 +89,8 @@ class DioUserService {
 
       final prefs = await SharedPreferences.getInstance();
 
-      final userInfo = jsonDecode( prefs.getString("userInfo")!);
+      // final userInfo = jsonDecode( prefs.getString("userInfo")!);
+      final userInfo = jsonDecode(prefs.getString("userInfo") ?? "{}");
 
       print(userInfo['id']);
 
@@ -44,6 +112,7 @@ class DioUserService {
         data: {
           "username": userName,
           "email": email,
+          "favoriteDishes": [],
           "fcmToken": fcmToken,
         },
       );
@@ -56,6 +125,7 @@ class DioUserService {
         jsonEncode({
           "email": email,
           "username": userName,
+          "favoriteDishes": [],
           'id': data["name"],
         }),
       );
@@ -72,7 +142,7 @@ class DioUserService {
     File? profilePicture,
     String? bio,
   }) async {
-    try {
+    // try {
       Map<String, dynamic> updatedData = {};
 
       if (username != null) updatedData['username'] = username;
@@ -104,6 +174,21 @@ class DioUserService {
 
         print('User updated: ${response.data}');
       }
+    }
+  Future<void> updateUserFavorites(
+      String userId, List<String> favorites) async {
+    try {
+      await _dio.update(
+        url: 'users/$userId.json',
+        data: {'favoriteDishes': favorites},
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      final userInfo = jsonDecode(prefs.getString("userInfo") ?? "{}");
+      userInfo['favoriteDishes'] = favorites;
+      await prefs.setString('userInfo', jsonEncode(userInfo));
+    } on DioException {
+      rethrow;
     } catch (e) {
       rethrow;
     }

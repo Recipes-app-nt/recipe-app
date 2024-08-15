@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
-import 'package:recipe_app/blocs/recipe/recipe_event.dart';
-import 'package:recipe_app/blocs/recipe/recipe_state.dart';
 import 'package:recipe_app/data/models/category_model.dart';
 import 'package:recipe_app/data/models/comment_model.dart';
 import 'package:recipe_app/data/models/like_model.dart';

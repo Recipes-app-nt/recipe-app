@@ -90,6 +90,8 @@ class SocailFunctionsService {
         url: '/users/$userId.json',
       );
 
+      print(response);
+
       if (response.data == null) {
         throw Exception('User not found');
       }

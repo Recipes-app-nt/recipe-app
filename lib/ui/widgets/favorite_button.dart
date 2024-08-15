@@ -46,6 +46,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
         return BlocConsumer<SocialFunctionsBloc, SocialFunctionsState>(
           listener: (context, socialState) {
+            // print(user!.id);
             if (socialState is SocialFunctionsSuccess) {
               final snackBar = SnackBar(
                 elevation: 0,
@@ -69,7 +70,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(snackBar);
 
-                // Update UserBloc state
+              // Update UserBloc state
               context.read<UserBloc>().add(UpdateUserFavoritesEvent(
                     recipeId: socialState.recipeId,
                     isFavoriteAdded: socialState.isFavoriteAdded,
@@ -83,10 +84,13 @@ class _FavoriteButtonState extends State<FavoriteButton> {
             return InkWell(
               onTap: () {
                 if (isFavorite) {
+                  // print(user!.id);
                   context.read<SocialFunctionsBloc>().add(
                         RemoveFavoriteEvent(widget.favoriteRecipeId, user!.id),
                       );
                 } else {
+                  // print(user!.id);
+
                   context.read<SocialFunctionsBloc>().add(
                         AddFavoriteEvent(widget.favoriteRecipeId, user!.id),
                       );

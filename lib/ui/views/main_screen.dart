@@ -39,7 +39,11 @@ class _MainScreenState extends State<MainScreen> {
           // setState(() {});
           // currentTab = 4;
           Navigator.push(
-              context, MaterialPageRoute(builder: (_) => AddRecipeScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddRecipeScreen(),
+            ),
+          );
         },
         child: const Icon(
           Icons.add,

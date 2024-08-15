@@ -160,7 +160,6 @@ class DioUserService {
         updatedData['profile_picture'] = downloadUrl;
       }
 
-      // Update the user data in the real-time database
       final response = await _dio.update(
         url: 'users/$userId.json',
         data: updatedData,

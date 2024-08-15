@@ -3,17 +3,18 @@
 
 part of 'recipe_bloc.dart';
 
-
 abstract class RecipeEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
 class LoadRecipes extends RecipeEvent {
-  // final List<Recipe> recipes;
-  // LoadRecipes(this.recipes);
-  // @override
-  // List<Object> get props => [recipes];
+  final String? categoryId;
+
+   LoadRecipes({ this.categoryId});
+
+  @override
+  List<Object> get props => [];
 }
 
 class AddRecipe extends RecipeEvent {
@@ -47,9 +48,9 @@ class DeleteRecipe extends RecipeEvent {
 class UploadMedia extends RecipeEvent {
   final String path;
   final String mediaType;
-  
-   UploadMedia(this.path, this.mediaType);
-  
+
+  UploadMedia(this.path, this.mediaType);
+
   @override
   List<Object> get props => [path, mediaType];
 }

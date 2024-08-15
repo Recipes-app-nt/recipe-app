@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class MySearchField extends StatefulWidget {
   final bool isSearch;
+  final Function()? onTap;
   const MySearchField({
     super.key,
     required this.isSearch,
+    this.onTap,
   });
 
   @override
@@ -16,21 +18,25 @@ class _MySearchFieldState extends State<MySearchField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: const Color(0xff1D1617).withOpacity(0.14),
-          blurRadius: 40,
-          spreadRadius: 0.0,
-        ),
-      ]),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xff1D1617).withOpacity(0.14),
+            blurRadius: 40,
+            spreadRadius: 0.0,
+          ),
+        ],
+      ),
       child: TextField(
+        onTap: widget.onTap,
+        readOnly: true,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
           contentPadding: const EdgeInsets.all(15),
           hintText: 'Search Grocery',
           hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
-          prefixIcon: Padding(
+          prefixIcon: const Padding(
             padding: EdgeInsets.all(12),
             child: Icon(CupertinoIcons.search),
           ),

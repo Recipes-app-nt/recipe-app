@@ -19,11 +19,24 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }
 
   void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
+    // try {
+    //   final recipes = await repository.getAllRecipes();
+    //   emit(RecipeLoaded(recipes));
+    // } catch (e) {
+    //   emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
+    // }
+
+    emit(RecipeLoading());
     try {
       final recipes = await repository.getAllRecipes();
-      emit(RecipeLoaded(recipes));
+      final filteredRecipes = event.categoryId == 'all'
+          ? recipes
+          : recipes
+              .where((recipe) => recipe.category == event.categoryId)
+              .toList();
+      emit(RecipeLoaded(filteredRecipes));
     } catch (e) {
-      emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
+      emit(RecipeError(e.toString()));
     }
   }
 
@@ -59,7 +72,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     emit(MediaUploadInProgress());
 
     try {
-      final mediaLink = await repository.uploadMedia(event.path, event.mediaType);
+      final mediaLink =
+          await repository.uploadMedia(event.path, event.mediaType);
 
       if (mediaLink != null) {
         emit(MediaUploadSuccess(mediaLink, event.mediaType));

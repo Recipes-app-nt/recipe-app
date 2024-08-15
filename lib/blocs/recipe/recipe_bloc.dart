@@ -28,17 +28,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
     }
 
-    // try {
-    //   final recipes = await repository.getAllRecipes();
-    //   final filteredRecipes = event.categoryId == 'all'
-    //       ? recipes
-    //       : recipes
-    //           .where((recipe) => recipe.category == event.categoryId)
-    //           .toList();
-    //   emit(RecipeLoaded(filteredRecipes));
-    // } catch (e) {
-    //   emit(RecipeError(e.toString()));
-    // }
   }
 
   void _getUserRecipes(GetUserRecipes event, Emitter<RecipeState> emit) async {

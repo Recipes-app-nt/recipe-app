@@ -71,10 +71,10 @@ class DioCategoryService {
 
 // void main(List<String> args) async {
 //   DioCategoryService dioCategoryService = DioCategoryService();
-//   final res = await dioCategoryService.addCategories("Test cat");
+//   final res = await dioCategoryService.getCategories();
 
-//   // for (var i in res) {
-//   //   print(i.categoryId);
-//   //   print(i.name);
-//   // }
+//   for (var i in res) {
+//     print(i.categoryId);
+//     print(i.name);
+//   }
 // }

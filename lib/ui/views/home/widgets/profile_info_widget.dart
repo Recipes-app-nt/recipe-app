@@ -103,7 +103,6 @@ class _ProfileInfoWidgetState extends State<ProfileInfoWidget> {
   }
 } */
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/auth/auth_bloc.dart';
@@ -190,12 +189,13 @@ class _ProfileInfoWidgetState extends State<ProfileInfoWidget> {
                     borderRadius: BorderRadius.circular(20),
                     color: const Color(0xffFFCE80),
                   ),
-                  child: Image.network(
-                    user.profilePicture,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset('assets/images/emoji.png');
-                    },
-                  ),
+                  child: Image.asset('assets/images/emoji.png'),
+                  // child: Image.network(
+                  //   user.profilePicture,
+                  //   errorBuilder: (context, error, stackTrace) {
+                  //     return Image.asset('assets/images/emoji.png');
+                  //   },
+                  // ),
                 ),
               ),
             ],

@@ -17,19 +17,20 @@ class HomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-               ProfileInfoWidget(),
-               Padding(
+              ProfileInfoWidget(),
+              Padding(
                 padding: EdgeInsets.all(16.0),
                 child: MySearchField(),
               ),
-               Gap(10.0),
-               MyCategoriesRow(),
-              //  Gap(70.0),
-               StackProductWidget(),
+              Gap(10.0),
+              MyCategoriesRow(),
+
+              
+              StackProductWidget(),
 
               //* Category text style
-               Padding(
-                padding:  EdgeInsets.all(16.0),
+              Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Row(
                   children: [
                     Text(

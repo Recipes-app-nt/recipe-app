@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/blocs/category/category_bloc.dart';
 import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
+import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/models/category_model.dart';
 import 'package:recipe_app/data/models/recipe_model.dart';
 import 'package:recipe_app/data/services/media_picker_service.dart';
@@ -255,7 +256,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           final updatedRecipe = Recipe(
                             id: widget.recipe.id,
@@ -284,9 +285,12 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             const SnackBar(
                               content: Text("Ma'lumotlar tahrirlandi!"),
                               backgroundColor: Colors.green,
-                              duration: Duration(seconds: 2),
+                              duration: Duration(seconds: 1),
                             ),
                           );
+                          await Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.pop(context, true);
+                          });
                           print(updatedRecipe.title);
                         }
                       },

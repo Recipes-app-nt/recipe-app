@@ -65,7 +65,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   void _onUpdateRecipe(UpdateRecipe event, Emitter<RecipeState> emit) async {
     try {
       await repository.updateRecipe(event.recipe, event.id);
-      add(LoadRecipes());
     } catch (e) {
       emit(RecipeError("Malumotni tahrirlashda xatolik mavjud $e"));
     }

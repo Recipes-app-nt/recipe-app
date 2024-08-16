@@ -122,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                       Column(
                         children: [
-                          Text(
+                          const Text(
                             "Recipe",
                             style: TextStyle(
                               color: Color(0xFFA9A9A9),
@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           Text(
                             myRetseptsCount.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                             ),
@@ -291,8 +291,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                         MaterialPageRoute(
                                                           builder: (context) =>
                                                               EditRecipeScreen(
-                                                                  recipe:
-                                                                      recipe),
+                                                            recipe: recipe,
+                                                          ),
                                                         ),
                                                       );
 

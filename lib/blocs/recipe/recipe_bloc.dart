@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
-
 import '../../data/models/recipe_model.dart';
-
 part 'recipe_event.dart';
 part 'recipe_state.dart';
 
@@ -40,17 +38,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
     }
 
-    // try {
-    //   final recipes = await repository.getAllRecipes();
-    //   final filteredRecipes = event.categoryId == 'all'
-    //       ? recipes
-    //       : recipes
-    //           .where((recipe) => recipe.category == event.categoryId)
-    //           .toList();
-    //   emit(RecipeLoaded(filteredRecipes));
-    // } catch (e) {
-    //   emit(RecipeError(e.toString()));
-    // }
   }
 
   void _getUserRecipes(GetUserRecipes event, Emitter<RecipeState> emit) async {

@@ -11,12 +11,24 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final RecipeRepository repository;
 
   RecipeBloc(this.repository) : super(RecipeLoading()) {
+    on<GetRecipeById>(_onGetRecipeById);
     on<LoadRecipes>(_onLoadRecipes);
     on<AddRecipe>(_onAddRecipe);
     on<UpdateRecipe>(_onUpdateRecipe);
     on<DeleteRecipe>(_onDeleteRecipe);
     on<UploadMedia>(_onUploadMedia);
     on<GetUserRecipes>(_getUserRecipes);
+  }
+
+  Future<void> _onGetRecipeById(
+      GetRecipeById event, Emitter<RecipeState> emit) async {
+    emit(RecipeLoading());
+    try {
+      final recipe = await repository.getRecipeById(event.id);
+      emit(RecipeLoaded(recipe));
+    } catch (e) {
+      emit(RecipeError(e.toString()));
+    }
   }
 
   void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {

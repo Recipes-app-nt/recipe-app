@@ -38,6 +38,15 @@ class UpdateRecipe extends RecipeEvent {
   List<Object> get props => [recipe, id];
 }
 
+class GetRecipeById extends RecipeEvent {
+  final String id;
+
+  GetRecipeById(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
+
 class DeleteRecipe extends RecipeEvent {
   final String id;
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
-import 'package:recipe_app/ui/views/home/widgets/search_field.dart';
+import 'package:recipe_app/ui/views/home/widgets/comments_widget.dart';
+import 'package:recipe_app/ui/views/home/widgets/like_button.dart';
 import 'package:recipe_app/ui/widgets/favorite_button.dart';
 
 import '../../../../data/models/recipe_model.dart';
@@ -39,9 +39,8 @@ class _DetailsScreenState extends State<DetailsScreen>
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
+          RecipeOptions(
+            recipe: widget.recipe,
           ),
         ],
       ),
@@ -58,10 +57,22 @@ class _DetailsScreenState extends State<DetailsScreen>
                     borderRadius: BorderRadius.circular(26.0),
                   ),
                   width: double.infinity,
-                  child: Image.network(
-                    widget.recipe.imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child: widget.recipe.imageUrl.isNotEmpty
+                      ? Image.network(
+                          widget.recipe.imageUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                          fit: BoxFit.cover,
+                        ),
+                ),
+                Positioned(
+                  top: 12,
+                  right: 80,
+                  child: LikeButton(
+                      likeRecipeId: widget.recipe.id,
+                      likes: widget.recipe.likes),
                 ),
                 Positioned(
                   top: 16,
@@ -224,61 +235,7 @@ class _DetailsScreenState extends State<DetailsScreen>
                           );
                         },
                       ),
-                      Column(
-                        children: [
-                          Expanded(
-                            child: widget.recipe.comments.isEmpty
-                                ? ListView.separated(
-                                    itemCount: widget.recipe.ingredients.length,
-                                    separatorBuilder: (context, index) =>
-                                        const Gap(20.0),
-                                    itemBuilder: (context, index) {
-                                      final comments =
-                                          widget.recipe.comments[index];
-                                      final date = DateTime.parse(
-                                          comments.timestamp.toString());
-                                      final formattedDate =
-                                          DateFormat('hh:mm').format(date);
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                            color: Colors.grey.withOpacity(0.5),
-                                          ),
-                                          child: ListTile(
-                                            title: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(widget.recipe.authorId),
-                                                Text(
-                                                  formattedDate,
-                                                  style: const TextStyle(
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            subtitle: Text(comments.text),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : const Text("Commentlar mavjud emas55555551"),
-                          ),
-                          const Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: MySearchField(
-                              isSearch: false,
-                            ),
-                          ),
-                        ],
-                      ),
+                      CommentsWidget(recipe: widget.recipe)
                     ],
                   ),
                 ),
@@ -287,6 +244,86 @@ class _DetailsScreenState extends State<DetailsScreen>
           ),
         ],
       ),
+    );
+  }
+}
+
+class RecipeOptions extends StatefulWidget {
+  final Recipe recipe;
+  const RecipeOptions({
+    super.key,
+    required this.recipe,
+  });
+
+  @override
+  State<RecipeOptions> createState() => _RecipeOptionsState();
+}
+
+class _RecipeOptionsState extends State<RecipeOptions> {
+  // void shareRecipe(Recipe recipe) {
+  //   final String recipeDetails = '''
+  // Title: ${recipe.title}
+  // Cooking Time: ${recipe.cookingTime} mins
+  // Ingredients: ${recipe.ingredients.map((i) => i).join(', ')}
+  // Image URL: ${recipe.imageUrl}
+  // ''';
+
+  //   Share.share(recipeDetails);
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert),
+      onSelected: (String result) {
+        // Handle selection
+        print('Selected: $result');
+        if (result == 'share') {
+          // shareRecipe(widget.recipe);
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        const PopupMenuItem<String>(
+          value: 'share',
+          child: Row(
+            children: [
+              Icon(Icons.share, size: 20),
+              SizedBox(width: 10),
+              Text('share'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'rate',
+          child: Row(
+            children: [
+              Icon(Icons.star, size: 20),
+              SizedBox(width: 10),
+              Text('Rate Recipe'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'review',
+          child: Row(
+            children: [
+              Icon(Icons.chat_bubble_outline, size: 20),
+              SizedBox(width: 10),
+              Text('Review'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'unsave',
+          child: Row(
+            children: [
+              Icon(Icons.bookmark_border, size: 20),
+              SizedBox(width: 10),
+              Text('Unsave'),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

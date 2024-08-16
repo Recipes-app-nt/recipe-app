@@ -33,6 +33,37 @@ class RecipeService {
     }
   }
 
+  Future<List<Recipe>> getRecipeById(String id) async {
+    try {
+      final response = await _dioClient.get(
+        url: '/recipes/$id.json',
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception("Retseptni olishda xatolik yuz berdi");
+      }
+
+      if (response.data == null) {
+        throw Exception("Retsept topilmadi");
+      }
+
+      List<Recipe> recipes = [];
+      final Map<String, dynamic> data = response.data;
+
+      data.forEach(
+        (key, value) {
+          value['id'] = key;
+          recipes.add(Recipe.fromJson(value, key));
+        },
+      );
+      return recipes;
+
+      // return Recipe.fromJson(response.data, id);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Recipe> updateRecipe(Recipe recipe, String id) async {
     try {
       final response = await _dioClient.update(
@@ -72,14 +103,15 @@ class RecipeService {
 
       final prefs = await SharedPreferences.getInstance();
 
-      final userData = jsonDecode(prefs.getString("userData")??"");
+      final userData = jsonDecode(prefs.getString("userData") ?? "");
 
       String email = userData['email'];
-      print(email);
+      print("Recipe service print: $email");
 
       for (final key in mapData.keys) {
         final value = mapData[key];
-        print(value['author_id']);
+        print("Yaratuvchilar Email: ${value['author_id']}");
+        print("object");
         if (value['author_id'] == email) {
           recipes.add(Recipe.fromJson(value, key));
         }

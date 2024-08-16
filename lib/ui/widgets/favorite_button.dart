@@ -54,13 +54,13 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.transparent,
                 content: AwesomeSnackbarContent(
-                  title: socialState.isFavoriteAdded
+                  title: socialState.isFavoriteAdded!
                       ? "Malumot qo'shildi!"
                       : "Malumot olindi!",
-                  message: socialState.isFavoriteAdded
+                  message: socialState.isFavoriteAdded!
                       ? 'Retsept Sevimlilarga muaffaqiyatli saqlandi!'
                       : 'Retsept Sevimlilardan olib tashlandi!',
-                  contentType: socialState.isFavoriteAdded
+                  contentType: socialState.isFavoriteAdded!
                       ? ContentType.success
                       : ContentType.warning,
                 ),
@@ -73,7 +73,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
               // Update UserBloc state
               context.read<UserBloc>().add(UpdateUserFavoritesEvent(
                     recipeId: socialState.recipeId,
-                    isFavoriteAdded: socialState.isFavoriteAdded,
+                    isFavoriteAdded: socialState.isFavoriteAdded!,
                   ));
             }
           },

@@ -16,6 +16,13 @@ class AddLikeEvent extends SocialFunctionsEvent {
   AddLikeEvent(this.recipeId, this.userId);
 }
 
+class RemoveLikeEvent extends SocialFunctionsEvent {
+  final String recipeId;
+  final String userId;
+
+  RemoveLikeEvent(this.recipeId, this.userId);
+}
+
 class AddFavoriteEvent extends SocialFunctionsEvent {
   final String recipeId;
   final String userId;

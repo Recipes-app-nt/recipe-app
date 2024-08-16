@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:recipe_app/blocs/recipe/recipe_bloc.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
-import 'package:recipe_app/data/services/get_it.dart';
 import 'package:recipe_app/ui/views/home/screens/search_screen.dart';
 import 'package:recipe_app/ui/views/home/widgets/new_recipe.dart';
 import 'package:recipe_app/ui/views/home/widgets/profile_info_widget.dart';
@@ -24,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    context.read<RecipeBloc>().add(LoadRecipes(categoryId: "all"));
+    // context.read<RecipeBloc>().add(LoadRecipes());
     super.initState();
   }
 
@@ -53,12 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const Gap(10.0),
               MyCategoriesRow(
                 onCategorySelected: (categoryId) {
-                  setState(() {
-                    selectedCategoryId = categoryId;
-                  });
+                  // setState(() {
+                  //   selectedCategoryId = categoryId;
+                  // });
                 },
               ),
-              StackProductWidget(categoryId: selectedCategoryId),
+              // StackProductWidget(categoryId: selectedCategoryId),
+              const StackProductWidget(),
 
               //* Category text style
               const Padding(

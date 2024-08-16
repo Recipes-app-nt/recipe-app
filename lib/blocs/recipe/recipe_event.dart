@@ -9,17 +9,15 @@ abstract class RecipeEvent extends Equatable {
 }
 
 class LoadRecipes extends RecipeEvent {
-  final String? categoryId;
+  // final String? categoryId;
 
-   LoadRecipes({ this.categoryId});
+  //  LoadRecipes();
 
   @override
   List<Object> get props => [];
 }
 
-class GetUserRecipes extends RecipeEvent {
-
-}
+class GetUserRecipes extends RecipeEvent {}
 
 class AddRecipe extends RecipeEvent {
   final Recipe recipe;
@@ -40,7 +38,14 @@ class UpdateRecipe extends RecipeEvent {
   List<Object> get props => [recipe, id];
 }
 
+class GetRecipeById extends RecipeEvent {
+  final String id;
 
+  GetRecipeById(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
 
 class DeleteRecipe extends RecipeEvent {
   final String id;

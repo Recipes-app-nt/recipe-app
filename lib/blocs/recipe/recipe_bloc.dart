@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recipe_app/blocs/user/user_bloc.dart';
 import 'package:recipe_app/data/repositories/recipe_repository.dart';
-
 import '../../data/models/recipe_model.dart';
-
 part 'recipe_event.dart';
 part 'recipe_state.dart';
 
@@ -12,6 +9,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final RecipeRepository repository;
 
   RecipeBloc(this.repository) : super(RecipeLoading()) {
+    on<GetRecipeById>(_onGetRecipeById);
     on<LoadRecipes>(_onLoadRecipes);
     on<AddRecipe>(_onAddRecipe);
     on<UpdateRecipe>(_onUpdateRecipe);
@@ -20,26 +18,26 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<GetUserRecipes>(_getUserRecipes);
   }
 
-  void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
-    // try {
-    //   final recipes = await repository.getAllRecipes();
-    //   emit(RecipeLoaded(recipes));
-    // } catch (e) {
-    //   emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
-    // }
-
+  Future<void> _onGetRecipeById(
+      GetRecipeById event, Emitter<RecipeState> emit) async {
     emit(RecipeLoading());
     try {
-      final recipes = await repository.getAllRecipes();
-      final filteredRecipes = event.categoryId == 'all'
-          ? recipes
-          : recipes
-              .where((recipe) => recipe.category == event.categoryId)
-              .toList();
-      emit(RecipeLoaded(filteredRecipes));
+      final recipe = await repository.getRecipeById(event.id);
+      emit(RecipeLoaded(recipe));
     } catch (e) {
       emit(RecipeError(e.toString()));
     }
+  }
+
+  void _onLoadRecipes(LoadRecipes event, Emitter<RecipeState> emit) async {
+    emit(RecipeLoading());
+    try {
+      final recipes = await repository.getAllRecipes();
+      emit(RecipeLoaded(recipes));
+    } catch (e) {
+      emit(RecipeError("Malumotlarni olishda xatolik mavjud! $e"));
+    }
+
   }
 
   void _getUserRecipes(GetUserRecipes event, Emitter<RecipeState> emit) async {

@@ -13,6 +13,7 @@ import 'package:toastification/toastification.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/category/category_bloc.dart';
+import '../blocs/navigation/navigation_bloc.dart';
 import '../data/services/get_it.dart';
 
 class MyApp extends StatelessWidget {
@@ -47,7 +48,12 @@ class MyApp extends StatelessWidget {
           BlocProvider.value(
             value: getIt.get<SocialFunctionsBloc>(),
           ),
-          BlocProvider(create: (context) => VideoBloc())
+          BlocProvider(
+            create: (context) => NavigationBloc()..add(AppStarted()),
+          ),
+          BlocProvider(
+            create: (context) => VideoBloc(),
+          )
         ],
         child: const ToastificationWrapper(
           child: MaterialApp(

@@ -278,6 +278,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
                           context.read<RecipeBloc>().add(
                               UpdateRecipe(updatedRecipe, widget.recipe.id));
+                          Navigator.pop(context);
                           clearController();
                           imageUrl = null;
                           videoUrl = null;

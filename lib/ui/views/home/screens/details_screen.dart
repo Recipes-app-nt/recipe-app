@@ -1,14 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
-import 'package:recipe_app/blocs/social_functions/social_function_bloc.dart';
-import 'package:recipe_app/data/models/comment_model.dart';
 import 'package:recipe_app/ui/views/home/widgets/comments_widget.dart';
 import 'package:recipe_app/ui/views/home/widgets/like_button.dart';
-import 'package:recipe_app/ui/views/home/widgets/search_field.dart';
 import 'package:recipe_app/ui/widgets/favorite_button.dart';
 
 import '../../../../data/models/recipe_model.dart';
@@ -45,9 +39,8 @@ class _DetailsScreenState extends State<DetailsScreen>
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
+          RecipeOptions(
+            recipe: widget.recipe,
           ),
         ],
       ),
@@ -251,6 +244,86 @@ class _DetailsScreenState extends State<DetailsScreen>
           ),
         ],
       ),
+    );
+  }
+}
+
+class RecipeOptions extends StatefulWidget {
+  final Recipe recipe;
+  const RecipeOptions({
+    super.key,
+    required this.recipe,
+  });
+
+  @override
+  State<RecipeOptions> createState() => _RecipeOptionsState();
+}
+
+class _RecipeOptionsState extends State<RecipeOptions> {
+  // void shareRecipe(Recipe recipe) {
+  //   final String recipeDetails = '''
+  // Title: ${recipe.title}
+  // Cooking Time: ${recipe.cookingTime} mins
+  // Ingredients: ${recipe.ingredients.map((i) => i).join(', ')}
+  // Image URL: ${recipe.imageUrl}
+  // ''';
+
+  //   Share.share(recipeDetails);
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert),
+      onSelected: (String result) {
+        // Handle selection
+        print('Selected: $result');
+        if (result == 'share') {
+          // shareRecipe(widget.recipe);
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        const PopupMenuItem<String>(
+          value: 'share',
+          child: Row(
+            children: [
+              Icon(Icons.share, size: 20),
+              SizedBox(width: 10),
+              Text('share'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'rate',
+          child: Row(
+            children: [
+              Icon(Icons.star, size: 20),
+              SizedBox(width: 10),
+              Text('Rate Recipe'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'review',
+          child: Row(
+            children: [
+              Icon(Icons.chat_bubble_outline, size: 20),
+              SizedBox(width: 10),
+              Text('Review'),
+            ],
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'unsave',
+          child: Row(
+            children: [
+              Icon(Icons.bookmark_border, size: 20),
+              SizedBox(width: 10),
+              Text('Unsave'),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

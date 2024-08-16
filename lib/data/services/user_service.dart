@@ -69,6 +69,10 @@ class DioUserService {
     if (profilePicture != null) {
       // Upload the image to Firebase Storage
       String fileName = path.basename(profilePicture.path);
+      print("----------------------------");
+      print(fileName);
+      print("----------------------------");
+
       Reference storageRef = _storage.ref().child('profile_pictures/$fileName');
 
       UploadTask uploadTask = storageRef.putFile(profilePicture);

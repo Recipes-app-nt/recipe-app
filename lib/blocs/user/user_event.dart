@@ -23,6 +23,7 @@ final class EditUserEvent extends UserEvent {
     this.bio,
   });
 }
+
 final class UpdateUserFavoritesEvent extends UserEvent {
   final String recipeId;
   final bool isFavoriteAdded;

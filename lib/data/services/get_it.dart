@@ -52,6 +52,7 @@ void setUp() {
   getIt.registerSingleton(
     SocialFunctionsBloc(
       repository: getIt.get<SocialFunctionsRepository>(),
+      recipeBloc: getIt.get<RecipeBloc>(),
     ),
   );
 }

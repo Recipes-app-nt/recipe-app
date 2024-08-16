@@ -1,7 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:recipe_app/blocs/social_functions/social_function_bloc.dart';
+import 'package:recipe_app/data/models/comment_model.dart';
+import 'package:recipe_app/ui/views/home/widgets/comments_widget.dart';
+import 'package:recipe_app/ui/views/home/widgets/like_button.dart';
 import 'package:recipe_app/ui/views/home/widgets/search_field.dart';
 import 'package:recipe_app/ui/widgets/favorite_button.dart';
 
@@ -67,6 +73,13 @@ class _DetailsScreenState extends State<DetailsScreen>
                           "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                           fit: BoxFit.cover,
                         ),
+                ),
+                Positioned(
+                  top: 12,
+                  right: 80,
+                  child: LikeButton(
+                      likeRecipeId: widget.recipe.id,
+                      likes: widget.recipe.likes),
                 ),
                 Positioned(
                   top: 16,
@@ -229,61 +242,7 @@ class _DetailsScreenState extends State<DetailsScreen>
                           );
                         },
                       ),
-                      Column(
-                        children: [
-                          Expanded(
-                            child: widget.recipe.comments.isEmpty
-                                ? ListView.separated(
-                                    itemCount: widget.recipe.ingredients.length,
-                                    separatorBuilder: (context, index) =>
-                                        const Gap(20.0),
-                                    itemBuilder: (context, index) {
-                                      final comments =
-                                          widget.recipe.comments[index];
-                                      final date = DateTime.parse(
-                                          comments.timestamp.toString());
-                                      final formattedDate =
-                                          DateFormat('hh:mm').format(date);
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                            color: Colors.grey.withOpacity(0.5),
-                                          ),
-                                          child: ListTile(
-                                            title: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(widget.recipe.authorId),
-                                                Text(
-                                                  formattedDate,
-                                                  style: const TextStyle(
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            subtitle: Text(comments.text),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : const Text("Commentlar mavjud emas"),
-                          ),
-                          const Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: MySearchField(
-                              isSearch: false,
-                            ),
-                          ),
-                        ],
-                      ),
+                      CommentsWidget(recipe: widget.recipe)
                     ],
                   ),
                 ),

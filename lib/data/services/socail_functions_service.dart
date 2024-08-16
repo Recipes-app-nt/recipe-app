@@ -84,6 +84,47 @@ class SocailFunctionsService {
     }
   }
 
+  Future<void> removeLike(String recipeId, String userId) async {
+    try {
+      final response = await _dioClient.get(
+        url: '/recipes/$recipeId.json',
+      );
+
+      if (response.data == null) {
+        throw Exception('Recipe not found');
+      }
+
+      final likes = response.data['likes'];
+      List<String> updatedLikes = [];
+
+      if (likes is List) {
+        updatedLikes = List<String>.from(likes);
+      }
+
+      if (updatedLikes.contains(userId)) {
+        updatedLikes.remove(userId);
+      }
+
+      final updateResponse = await _dioClient.update(
+        url: '/recipes/$recipeId.json',
+        data: {'likes': updatedLikes},
+      );
+
+      if (updateResponse.statusCode != 200 &&
+          updateResponse.statusCode != 201) {
+        throw Exception('Failed to update likes');
+      }
+
+      print('Like removed successfully');
+    } on DioException catch (e) {
+      print('Error removing like: ${e.response?.data}');
+      rethrow;
+    } catch (e) {
+      print('Error removing like: $e');
+      rethrow;
+    }
+  }
+
   Future<void> addFavorite(String recipeId, String userId) async {
     try {
       final response = await _dioClient.get(
@@ -170,15 +211,17 @@ class SocailFunctionsService {
 // void main(List<String> args) async {
 //   SocailFunctionsService recipeService = SocailFunctionsService();
 //   try {
-//     // await recipeService.addComment(
-//     //   "-O4JbQ8N3P02dRa6yitU",
-//     //   Comment(
-//     //     userId: "-O4JPYVX75rFxwiyar26",
-//     //     text: "Comment qo'shish kerak",
-//     //     timestamp: DateTime.now(),
-//     //   ),
-//     // );
-//     await recipeService.addLike("-O4JbQ8N3P02dRa6yitU", "-O4JPYVX75rFxwiyar26");
+//     await recipeService.addComment(
+//       "-O4MsvLY-APLCVilb6DS",
+//       Comment(
+//         userId: "userI",
+//         text: "Comment qo'shish kerak",
+//         timestamp: DateTime.now(),
+//       ),
+//     );
+//     // await recipeService.addLike("-O4MPfULARlokIDaWJtU", "-O4MNXaw60fINLzZ7w-T");
+//     // await recipeService.removeLike(
+//     //     "-O4MPfULARlokIDaWJtU", "-O4MNXaw60fINLzZ7w-T");
 //     // await recipeService.addFavorite("-O4GbfFDcTmIYR6D4bAB", '-O4H67gKcKWL151iNuDy');
 //     //  await recipeService.removeFavorite("-O4GbfFDcTmIYR6D4bAB", "-O4H67gKcKWL151iNuDy");
 //     print('Update successful');

@@ -278,7 +278,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
                           context.read<RecipeBloc>().add(
                               UpdateRecipe(updatedRecipe, widget.recipe.id));
-                          Navigator.pop(context);
+
                           clearController();
                           imageUrl = null;
                           videoUrl = null;
@@ -292,7 +292,6 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           await Future.delayed(const Duration(seconds: 2), () {
                             Navigator.pop(context, true);
                           });
-                          print(updatedRecipe.title);
                         }
                       },
                       style: ElevatedButton.styleFrom(

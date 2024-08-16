@@ -64,18 +64,16 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     print("==================Manimcha localga saqlandi");
   }
 
-  void getUserEmail()async{
+  void getUserEmail() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final userInfo = jsonDecode( prefs.getString("userData")!);
+    final userInfo = jsonDecode(prefs.getString("userData")!);
 
-    if(userInfo != null){
+    if (userInfo != null) {
       authorId = userInfo["email"];
-    }else{
+    } else {
       print("Foydlanuvchi malumotlari mavjud emas!!!");
     }
-
-
   }
 
   void clearController() {
@@ -158,8 +156,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               );
             });
           } else if (state is MediaUploadFailure) {
-            return  Center(
-                child: Text(state.message),);
+            return Center(
+              child: Text(state.message),
+            );
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -307,7 +306,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           );
                           await _saveRecipeToHive(recipe);
                           context.read<RecipeBloc>().add(AddRecipe(recipe));
-                          Navigator.pop(context);
+
                           clearController();
                           imageUrl = null;
                           videoUrl = null;
@@ -315,9 +314,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             const SnackBar(
                               content: Text("Ma'lumotlar saqlandi!!!"),
                               backgroundColor: Colors.green,
-                              duration: Duration(seconds: 2),
+                              duration: Duration(seconds: 1),
                             ),
                           );
+
+                          await Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.pop(context, true);
+                          });
                         }
                       },
                       style: ElevatedButton.styleFrom(
